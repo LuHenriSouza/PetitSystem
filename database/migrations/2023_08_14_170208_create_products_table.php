@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('prod_id');
-            $table->string('prod_code');
+            $table->string('prod_code')->unique();
             $table->string('prod_name');
             $table->tinyInteger('prod_setor');
             $table->decimal('prod_price',10,2);
