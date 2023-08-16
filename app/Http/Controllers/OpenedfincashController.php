@@ -20,7 +20,6 @@ class OpenedfincashController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -28,7 +27,22 @@ class OpenedfincashController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'value' => 'required|numeric',
+        ]);
+
+        // Create a new Openedfincash instance
+        $openedfincash = new Openedfincash();
+        $openedfincash->openfincash_name = $validatedData['name'];
+        $openedfincash->openfincash_value = $validatedData['value'];
+        $openedfincash->openfincash_isFinished = false;
+
+        // Save the opened financial cash to the database
+        $openedfincash->save();
+
+        return response()->json(['message' => 'Caixa Aberto Com Sucesso!'], 201);
     }
 
     /**
