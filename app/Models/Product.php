@@ -27,6 +27,7 @@ class Product extends Model
 
     public function soldtoday()
     {
-        return $this->BelongsToMany(Soldtoday::class,'product_soldtodays');
+        return $this->BelongsToMany(Soldtoday::class,'product_soldtodays')
+            ->withPivot(['qnt','unique_price','total_prace']);
     }
 }

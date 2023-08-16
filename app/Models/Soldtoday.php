@@ -9,10 +9,13 @@ class Soldtoday extends Model
 {
     use HasFactory;
 
-
+    protected $primaryKey = 'sale_id';
 
     public function products()
     {
-        return $this->BelongsToMany(Product::class,'product_soldtodays');
+        return $this->BelongsToMany(Product::class,'product_soldtodays')
+            ->withPivot(['qnt',
+            'unique_price',
+            'total_prace']);
     }
 }
