@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{ProfileController, OpenedfincashController};
+use App\Http\Controllers\{ProfileController, OpenedfincashController, ProductController};
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -22,15 +22,15 @@ Route::middleware(['auth'])->group(function () {
         return view('sb-admin.dashboard');
     })->name('home');
 
-    Route::get('/caixa', function () {
-        return view('sb-admin.fincash');
-    })->name('fincash');
+    Route::get('/caixa', [OpenedfincashController::class, 'create'])->name('fincash.create');
 
     Route::post('/caixa', [OpenedfincashController::class, 'store'])->name('fincash.store');
 
     Route::get('/produtos', function () {
         return view('sb-admin.products');
     })->name('products');
+
+    Route::post('/produtos',[ProductController::class, 'store'])->name('product.store');
 
     Route::get('/dashboard', function () {
         return view('sb-admin.dashboard');

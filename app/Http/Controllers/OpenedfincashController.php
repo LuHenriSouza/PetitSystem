@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Openedfincash;
 use Illuminate\Http\Request;
-
 class OpenedfincashController extends Controller
 {
     /**
@@ -20,6 +19,10 @@ class OpenedfincashController extends Controller
      */
     public function create()
     {
+        $hasUnfinishedFincash = OpenedFincash::where('openfincash_isFinished', false)->exists();
+        $unfinishedFincash = OpenedFincash::where('openfincash_isFinished', false)->first();
+
+        return view('sb-admin.fincash',  compact('hasUnfinishedFincash','unfinishedFincash'));
     }
 
     /**
@@ -42,7 +45,8 @@ class OpenedfincashController extends Controller
         // Save the opened financial cash to the database
         $openedfincash->save();
 
-        return response()->json(['message' => 'Caixa Aberto Com Sucesso!'], 201);
+        return redirect(route('fincash.create'));
+
     }
 
     /**

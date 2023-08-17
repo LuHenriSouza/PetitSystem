@@ -1,5 +1,5 @@
         <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #1e1e1e">
 
                 <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('home')}}">
@@ -26,7 +26,7 @@
 
                 <!-- Nav Item - Caixa -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('fincash')}}">
+                    <a class="nav-link" href="{{route('fincash.create')}}">
                         <i class="fas fa-solid fa-cash-register"></i>
                         <span>Caixa</span></a>
                 </li>

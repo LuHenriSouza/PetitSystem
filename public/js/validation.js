@@ -56,4 +56,5 @@ $(document).ready(function() {
         // Coloca o cursor no final do texto
         this.setSelectionRange(formattedValue.length, formattedValue.length);
     });
+
 });

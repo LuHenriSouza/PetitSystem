@@ -6,22 +6,22 @@
             </div>
             <div class="card-body">
                 <!-- Corpo -->
-                <table class="table table-striped table-responsive">
-                    <thead>
-                        <tr>
-                            <th scope="col">Código</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Preço</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                        <tr>
-                            <th scope="row" class="align-middle">123321</th>
-                            <td class="align-middle">Luiz askldjaskldjaskljdasjdkjaskldasj asdas</td>
-                            <td class="align-middle">R$32,40</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Preço</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <td class="align-middle">Luiz askldjaskldjaskljdasjdkjaskldasjasdas</td>
+                                <td class="align-middle">R$32,40</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <!-- /Corpo -->
 
             </div>
@@ -44,8 +44,24 @@
                         <td>item 5</td>
                         <td>item 6</td>
                     </tr>
+                    <tr>
+                        <td>item 1</td>
+                        <td>item 2</td>
+                        <td>item 3</td>
+                    </tr>
+                    <tr>
+                        <td>item 1</td>
+                        <td>item 2</td>
+                        <td>item 3</td>
+                    </tr>
+                    <tr>
+                        <td>item 1</td>
+                        <td>item 2</td>
+                        <td>item 3</td>
+                    </tr>
                 </table>
             </div>
         </div>
     </div>
+
 </div>

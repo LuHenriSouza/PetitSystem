@@ -6,16 +6,14 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Produtos</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
         </div>
 
         <!-- Card -->
         <div class="card shadow mb-4">
             <div class="card-header py-2 d-sm-flex align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Todos os Produtos</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Todos os Produtos</h6>
                 <!--  Button -->
-                <button type="button" class="btn btn-primary btn-icon-split p-0" data-bs-toggle="modal"
+                <button type="button" class="btn btn-dark btn-icon-split p-0" data-bs-toggle="modal"
                     data-bs-target="#staticBackdrop">
                     <span class="icon text-white-50"><i class="fa fa-regular fa-plus"></i></span>
                     <span class="text">Adicionar Produto</span>
@@ -42,7 +40,7 @@
                             <td class="align-middle">3</td>
                             <td class="align-middle">R$32,40</td>
                             <td class="align-middle">
-                                <a href="#" class="btn btn-primary btn-circle">
+                                <a href="#" class="btn btn-danger btn-circle">
                                     <i class="fa fa-solid fa-trash"></i>
                                 </a>
 
@@ -79,7 +77,8 @@
                             <label class="btn btn-outline-primary" for="btnradio2">Código Personalizado</label>
                         </div>
                     </div>
-                    <form action="?" method="post">
+                    <form id="ProductForm">
+                        @csrf
                         <div class="mb-3" id="customCodeInput">
                             <label for="CustomCode" class="form-label">Código</label>
                             <input type="number" class="form-control" id="CustomCode" name="CustomCode" required disabled>
@@ -104,7 +103,7 @@
                                 value="0.00">
                         </div>
 
-                        <button type="submit" class="mt-3 btn btn-primary">Adicionar</button>
+                        <button type="button" class="mt-3 btn btn-primary">Adicionar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
