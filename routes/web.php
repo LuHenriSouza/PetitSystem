@@ -26,11 +26,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/caixa', [OpenedfincashController::class, 'store'])->name('fincash.store');
 
-    Route::get('/produtos', function () {
-        return view('sb-admin.products');
-    })->name('products');
-
-    Route::post('/produtos',[ProductController::class, 'store'])->name('product.store');
+    Route::prefix('produtos')->group(function () {
+        Route::get('/novo', [ProductController::class, 'create'])->name('product.create');
+        Route::get('/', [ProductController::class, 'index'])->name('product.index');
+    });
 
     Route::get('/dashboard', function () {
         return view('sb-admin.dashboard');

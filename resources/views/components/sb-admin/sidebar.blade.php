@@ -33,7 +33,7 @@
 
                 <!-- Nav Item - Produtos -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('products')}}">
+                    <a class="nav-link" href="{{route('product.index')}}">
                         <i class="fas fa-solid fa-tags"></i>
                         <span>Produtos</span></a>
                 </li>

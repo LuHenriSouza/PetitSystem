@@ -21,10 +21,6 @@ $(document).ready(function() {
         this.setSelectionRange(formattedValue.length, formattedValue.length);
     });
 
-    $('#staticBackdrop').on('shown.bs.modal', function() {
-        $('#ProductName').focus();
-    })
-
     // Function to enable or disable the "Código" input field based on selection
     $('input[name="btnradio"]').on('change', function() {
         const customCodeInput = $('#CustomCode');
