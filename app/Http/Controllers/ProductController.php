@@ -28,23 +28,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'CustomCode' => 'required|string',
-            'ProductName' => 'required|string',
-            'ProductSetor' => 'required|numeric',
-            'ProductPrice' => 'required|numeric'
-        ]);
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'CustomCode' => 'required|string',
+                'ProductName' => 'required|string',
+                'ProductSetor' => 'required|numeric',
+                'ProductPrice' => 'required|numeric'
+            ]);
 
-        // Create a new Product instance
-        $product = new Product();
-        $product->prod_code = $validatedData['CustomCode'];
-        $product->prod_name = $validatedData['ProductName'];
-        $product->prod_setor = $validatedData['ProductSetor'];
-        $product->prod_price = $validatedData['ProductPrice'];
+            // Create a new Product instance
+            $product = new Product();
+            $product->prod_code = $validatedData['CustomCode'];
+            $product->prod_name = $validatedData['ProductName'];
+            $product->prod_setor = $validatedData['ProductSetor'];
+            $product->prod_price = $validatedData['ProductPrice'];
 
-        // Save the Product to the database
-        $product->save();
+            // Save the Product to the database
+            $product->save();
+
+            return redirect(route('product.create'))->with('message', 'Produto Cadastrado com Sucesso!');
     }
 
     /**

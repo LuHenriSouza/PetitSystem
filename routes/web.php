@@ -26,10 +26,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/caixa', [OpenedfincashController::class, 'store'])->name('fincash.store');
 
-    Route::prefix('produtos')->group(function () {
         Route::get('/novo', [ProductController::class, 'create'])->name('product.create');
-        Route::get('/', [ProductController::class, 'index'])->name('product.index');
-    });
+        Route::post('/novo',[ProductController::class, 'store'])->name('product.store');
+        Route::get('/produtos', [ProductController::class, 'index'])->name('product.index');
 
     Route::get('/dashboard', function () {
         return view('sb-admin.dashboard');

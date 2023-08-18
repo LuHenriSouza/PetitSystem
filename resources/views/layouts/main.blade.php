@@ -21,6 +21,9 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    {{-- my Custom CSS --}}
+    <link rel="stylesheet" href="{{asset('css/my-style.css')}}">
+
 </head>
 
 <body id="page-top">

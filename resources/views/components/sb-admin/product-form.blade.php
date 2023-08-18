@@ -12,21 +12,23 @@
         <div class="card-body">
             <div class="btn-group rounded mt-2" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                <label class="rounded-start btn btn-outline-primary" for="btnradio1">Código de
+                <label class="rounded-start btn btn-outline-warning" for="btnradio1">Código de
                     Barras</label>
 
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio2">Código Personalizado</label>
+                <label class="btn btn-outline-warning" for="btnradio2">Código Personalizado</label>
             </div>
-            <form id="ProductForm">
+            <form action="{{ route('product.store') }}" method="POST">
                 @csrf
                 <div class="mb-3" id="customCodeInput">
                     <label for="CustomCode" class="form-label">Código</label>
-                    <input type="number" style="max-width: 15%;" class="form-control" id="CustomCode" name="CustomCode" required disabled>
+                    <input type="number" style="max-width: 15%;" class="form-control" id="CustomCode" name="CustomCode"
+                        required disabled>
                 </div>
                 <div class="mb-2">
                     <label for="ProductName" class="form-label">Nome do Produto</label>
-                    <input type="text" style="max-width: 35%;" class="form-control" name="ProductName" id="ProductName" required>
+                    <input type="text" style="max-width: 35%;" class="form-control" name="ProductName"
+                        id="ProductName" required>
                 </div>
                 <div class="mb-3">
                     <label for="ProductSetor" class="form-label">Setor</label>
@@ -40,10 +42,11 @@
                 <label for="ProductPrice" class="form-label">Preço</label>
                 <div class="input-group">
                     <span class="input-group-text" id="inputGroupPrepend">R$</span>
-                    <input type="text" style="max-width: 10%;" class="form-control" id="ProductPrice" name="ProductPrice" value="0.00">
+                    <input type="text" style="max-width: 10%;" class="form-control" id="ProductPrice"
+                        name="ProductPrice" value="0.00">
                 </div>
 
-                <button type="button" class="mt-4 btn btn-primary">Adicionar</button>
+                <button type="subimit" class="mt-4 btn btn-warning">Adicionar</button>
             </form>
         </div>
     </div>
