@@ -98,7 +98,6 @@
 
     <!-- Validation Scripts -->
     <script src="{{asset('js/validation.js')}}"></script>
-
 </body>
 
 </html>

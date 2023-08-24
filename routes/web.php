@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{ProfileController, OpenedfincashController, ProductController};
+use App\Livewire\ProductSearchBar;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
