@@ -65,6 +65,7 @@
                     @endif
                 </tbody>
             </table>
+            {{$products->links()}}
             <!-- /Corpo -->
         </div>
     </div>

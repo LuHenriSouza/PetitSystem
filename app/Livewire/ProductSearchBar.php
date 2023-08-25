@@ -4,9 +4,10 @@ namespace App\Livewire;
 
 use App\Models\Product;
 use Livewire\Component;
-
+use Livewire\WithPagination;
 class ProductSearchBar extends Component
 {
+    use WithPagination;
 
     public $search = '';
 
@@ -16,10 +17,10 @@ class ProductSearchBar extends Component
         $results = [];
 
         if( strlen( $this->search ) >= 1 ){
-            $results = Product::where('prod_name', 'like', '%'.$this->search.'%' )->orderBy('updated_at', 'asc')->get();
+            $results = Product::where('prod_name', 'like', '%'.$this->search.'%' )->orderBy('updated_at', 'desc')->Paginate(10);
         }
         else{
-            $results = Product::get();
+            $results = Product::orderBy('updated_at', 'desc')->paginate);
         }
 
         return view('livewire.product-search-bar', [
