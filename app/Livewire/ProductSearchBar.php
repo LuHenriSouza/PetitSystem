@@ -17,11 +17,13 @@ class ProductSearchBar extends Component
         $results = [];
 
         if( strlen( $this->search ) >= 1 ){
-            $results = Product::where('prod_name', 'like', '%'.$this->search.'%' )->orderBy('updated_at', 'desc')->Paginate(10);
+            $results = Product::where('prod_name', 'like', '%'.$this->search.'%' )->orderBy('updated_at', 'desc')->paginate(10);
         }
         else{
-            $results = Product::orderBy('updated_at', 'desc')->paginate);
+            $results = Product::orderBy('updated_at', 'desc')->paginate(10);
         }
+
+        $this->resetPage();
 
         return view('livewire.product-search-bar', [
             'products' => $results

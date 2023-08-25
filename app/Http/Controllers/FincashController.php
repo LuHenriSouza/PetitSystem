@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Openedfincash;
+use App\Models\Fincash;
 use Illuminate\Http\Request;
-class OpenedfincashController extends Controller
+
+class FincashController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +20,8 @@ class OpenedfincashController extends Controller
      */
     public function create()
     {
-        $hasUnfinishedFincash = OpenedFincash::where('openfincash_isFinished', false)->exists();
-        $unfinishedFincash = OpenedFincash::where('openfincash_isFinished', false)->first();
+        $hasUnfinishedFincash = Fincash::where('fincash_isFinished', false)->exists();
+        $unfinishedFincash = Fincash::where('fincash_isFinished', false)->first();
 
         return view('sb-admin.fincash',  compact('hasUnfinishedFincash','unfinishedFincash'));
     }
@@ -36,23 +37,21 @@ class OpenedfincashController extends Controller
             'value' => 'required|numeric',
         ]);
 
-        // Create a new Openedfincash instance
-        $openedfincash = new Openedfincash();
-        $openedfincash->openfincash_name = $validatedData['name'];
-        $openedfincash->openfincash_value = $validatedData['value'];
-        $openedfincash->openfincash_isFinished = false;
+        // Create a new fincash instance
+        $fincash = new Fincash();
+        $fincash->fincash_name = $validatedData['name'];
+        $fincash->fincash_value = $validatedData['value'];
 
-        // Save the opened financial cash to the database
-        $openedfincash->save();
+        // Save the  financial cash to the database
+        $fincash->save();
 
         return redirect(route('fincash.create'));
-
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Openedfincash $openedfincash)
+    public function show(Fincash $fincash)
     {
         //
     }
@@ -60,7 +59,7 @@ class OpenedfincashController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Openedfincash $openedfincash)
+    public function edit(Fincash $fincash)
     {
         //
     }
@@ -68,7 +67,7 @@ class OpenedfincashController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Openedfincash $openedfincash)
+    public function update(Request $request, Fincash $fincash)
     {
         //
     }
@@ -76,7 +75,7 @@ class OpenedfincashController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Openedfincash $openedfincash)
+    public function destroy(Fincash $fincash)
     {
         //
     }
