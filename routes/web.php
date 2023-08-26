@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\{ProfileController, OpenedfincashController, ProductController};
-use App\Livewire\ProductSearchBar;
+use App\Http\Controllers\{FincashController, ProfileController, ProductController};
 use Illuminate\Support\Facades\Route;
+use App\Livewire\ClosedFincashes;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,33 +13,48 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::fallback(function () {
     return view('404');
 });
 
-// Redirecionar para a página de login caso a rota exista
+// Redirect to login if exist route
 Route::middleware(['auth'])->group(function () {
+
+    // Fallback 404
     Route::get('/', function () {
         return view('sb-admin.dashboard');
     })->name('home');
 
-    Route::get('/caixa', [OpenedfincashController::class, 'create'])->name('fincash.create');
+    // Financial Cashes
+    Route::controller(FincashController::class)->group(function () {
+        Route::get('/caixa', 'create')->name('fincash.create');
+        Route::post('/caixa', 'store')->name('fincash.store');
+    });
 
-    Route::post('/caixa', [OpenedfincashController::class, 'store'])->name('fincash.store');
+    // Products
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/novo', 'create')->name('product.create');
+        Route::post('/novo', 'store')->name('product.store');
+        Route::get('/produtos', 'index')->name('product.index');
+    });
 
-        Route::get('/novo', [ProductController::class, 'create'])->name('product.create');
-        Route::post('/novo',[ProductController::class, 'store'])->name('product.store');
-        Route::get('/produtos', [ProductController::class, 'index'])->name('product.index');
-
+    // Dashboard
     Route::get('/dashboard', function () {
         return view('sb-admin.dashboard');
     })->middleware('verified')->name('dashboard');
 
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Old financial boxes
+    Route::controller(ClosedFincashes::class)->group(function () {
+        Route::get('/Fechamentos', 'render')->name('closures.index');
+    });
+
+    // Profile
+    Route::middleware('auth')->controller(ProfileController::class)->group(function () {
+        Route::get('/profile', 'edit')->name('profile.edit');
+        Route::patch('/profile', 'update')->name('profile.update');
+        Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
