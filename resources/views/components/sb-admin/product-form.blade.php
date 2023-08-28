@@ -3,7 +3,7 @@
         <div class="card-header py-2 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-dark">Cadastrar Novo Produto</h6>
             <!--  Button -->
-            <a href="{{ route('product.index') }}" type="button" class="btn btn-dark btn-icon-split p-0">
+            <a href="{{ route('product.index') }}" type="button" class="btn btn-dark btn-icon-split p-0" wire:navigate>
                 <span class="icon text-white-50"><i class="fa-solid fa-arrow-left"></i></span>
                 <span class="text">Voltar para Produtos</span>
             </a>

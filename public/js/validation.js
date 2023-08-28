@@ -53,4 +53,12 @@ $(document).ready(function() {
         this.setSelectionRange(formattedValue.length, formattedValue.length);
     });
 
+    $('#search').on('focus', function(){
+        $(this).attr('placeholder', 'Nome ou Código');
+    });
+
+    $('#search').on('blur', function(){
+        $(this).attr('placeholder', ' ');
+    });
+
 });

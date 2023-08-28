@@ -4,17 +4,25 @@
         <div class="card-header py-2 d-sm-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-dark">Todos os Produtos</h6>
             <!--  Button -->
-            <a href="{{ route('product.create') }}" type="button" class="btn btn-dark btn-icon-split p-0">
+            <a href="{{ route('product.create') }}" type="button" class="btn btn-dark btn-icon-split p-0" wire:navigate>
                 <span class="icon text-white-50"><i class="fa fa-regular fa-plus"></i></span>
                 <span class="text">Adicionar Produto</span>
             </a>
             <!-- /Button -->
         </div>
         <div class="card-body">
+            @if (session('message'))
+                <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-check"></i>
+                    <div class="ms-3">{{ session('message') }}</div>
+                    <button type="button" class="btn-close pb-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             {{-- BUTTON SEARCH --}}
             <div class="ms-3">
                 <div class="search">
-                    <input wire:model.live="search" id="search" name="search" type="text" placeholder=" " autocomplete="off">
+                    <input wire:model.live="search" id="search" name="search" type="text" placeholder=" "
+                        autocomplete="off">
                     <div>
                         <svg>
                             <use xlink:href="#path">
@@ -52,9 +60,11 @@
                                 <td class="align-middle">{{ $product->prod_setor }}</td>
                                 <td class="align-middle">{{ $product->prod_price }}</td>
                                 <td class="align-middle">
-                                    <a href="#" class="btn btn-danger btn-circle">
+                                    <button type="button" class="btn btn-danger btn-circle" data-bs-toggle="modal"
+                                        data-bs-target="#modal-exclude" data-product-name="{{ $product->prod_name }}"
+                                        data-product-id="{{ $product->prod_id }}">
                                         <i class="fa fa-solid fa-trash"></i>
-                                    </a>
+                                    </button>
 
                                     <button type="button" class="btn btn-warning btn-circle">
                                         <i class="fas fa-solid fa-pen-to-square"></i>
@@ -65,10 +75,50 @@
                     @endif
                 </tbody>
             </table>
-            {{$products->links()}}
+            {{ $products->links() }}
             <!-- /Corpo -->
         </div>
     </div>
 
+    {{--  EXCLUDE MODAL SCRIPTS  --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var excludeButtons = document.querySelectorAll('.btn-danger[data-bs-toggle="modal"]');
+            var modalExclude = document.querySelector('#modal-exclude');
+            var modalProductName = modalExclude.querySelector('.modal-body p span');
+            var modalExcludeButton = modalExclude.querySelector('#exclude');
+
+            excludeButtons.forEach(function(button) {
+
+                button.addEventListener('click', function() {
+                    var productName = button.getAttribute('data-product-name');
+                    var productId = button.getAttribute('data-product-id');
+
+                    modalExcludeButton.setAttribute('wire:click', 'delete(' + productId + ')');
+                    modalProductName.textContent = productName;
+                });
+            });
+        });
+    </script>
+
+    {{-- EXCLUDE MODAL --}}
+    <div class="modal" tabindex="-1" id="modal-exclude">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Excluir</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir o Produto "<span></span>"?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="exclude" type="button" class="btn btn-danger"
+                        data-bs-dismiss="modal">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

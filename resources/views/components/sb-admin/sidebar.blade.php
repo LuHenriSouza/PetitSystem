@@ -2,7 +2,7 @@
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #1e1e1e">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" wire:navigate href="{{ route('home') }}">
                 <img src="img/Petit-logo.png" alt="logo" class="sidebar-brand-icon" height="90px" width="155px">
             </a>
 
@@ -11,7 +11,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('home') }}">
+                <a class="nav-link" wire:navigate href="{{ route('home') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -26,20 +26,20 @@
 
             <!-- Nav Item - Caixa -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('fincash.create') }}">
+                <a class="nav-link" wire:navigate href="{{ route('fincash.create') }}">
                     <i class="fas fa-solid fa-cash-register"></i>
                     <span>Caixa</span></a>
             </li>
 
             <!-- Nav Item - Produtos -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('product.index') }}">
+                <a class="nav-link" wire:navigate href="{{ route('product.index') }}">
                     <i class="fas fa-solid fa-tags"></i>
                     <span>Produtos</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('closures.index') }}">
+                <a class="nav-link" wire:navigate href="{{ route('closures.index') }}">
                     <i class="fa-solid fa-paste me-1"></i>
                     <span>Fechamentos</span></a>
             </li>

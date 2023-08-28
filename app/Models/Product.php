@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $primaryKey = 'prod_id';
 
@@ -27,7 +28,18 @@ class Product extends Model
 
     public function soldtoday()
     {
-        return $this->BelongsToMany(Soldtoday::class,'product_soldtodays')
-            ->withPivot(['qnt','unique_price','total_prace']);
+        return $this->BelongsToMany(Soldtoday::class, 'product_soldtodays')
+            ->withPivot(['qnt', 'unique_price', 'total_prace']);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {
+            // Add a timestamp into prod_code before Delete Product"
+            $product->prod_code = $product->prod_code .'D'. now();
+            $product->save();
+        });
     }
 }
