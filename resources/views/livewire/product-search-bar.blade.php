@@ -60,6 +60,7 @@
                                 <td class="align-middle">{{ $product->prod_setor }}</td>
                                 <td class="align-middle">{{ $product->prod_price }}</td>
                                 <td class="align-middle">
+
                                     <button type="button" class="btn btn-danger btn-circle" data-bs-toggle="modal"
                                         data-bs-target="#modal-exclude" data-product-name="{{ $product->prod_name }}"
                                         data-product-id="{{ $product->prod_id }}">
@@ -82,7 +83,7 @@
 
     {{--  EXCLUDE MODAL SCRIPTS  --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('livewire:navigated', function() {
             var excludeButtons = document.querySelectorAll('.btn-danger[data-bs-toggle="modal"]');
             var modalExclude = document.querySelector('#modal-exclude');
             var modalProductName = modalExclude.querySelector('.modal-body p span');
@@ -96,6 +97,16 @@
 
                     modalExcludeButton.setAttribute('wire:click', 'delete(' + productId + ')');
                     modalProductName.textContent = productName;
+
+                    var existingBackdrops = document.querySelectorAll('.modal-backdrop');
+
+                    if (existingBackdrops.length > 1) {
+                        existingBackdrops.forEach(function(backdrop, index) {
+                            if (index !== 0) {
+                                backdrop.remove();
+                            }
+                        });
+                    }
                 });
             });
         });

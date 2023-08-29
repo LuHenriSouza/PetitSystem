@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
+
 class ProductSearchBar extends Component
 {
     use WithPagination;
@@ -32,10 +33,13 @@ class ProductSearchBar extends Component
             $results = Product::orderBy('updated_at', 'desc')->paginate(10);
         }
 
-        $this->resetPage();
-
         return view('livewire.product-search-bar', [
             'products' => $results
         ]);
+    }
+
+    public function updated()
+    {
+        $this->resetPage();
     }
 }
