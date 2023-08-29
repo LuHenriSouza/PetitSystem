@@ -54,22 +54,67 @@
                 <tbody class="table-group-divider">
                     @if ($products)
                         @foreach ($products as $product)
-                            <tr>
+                            <tr wire:key="{{ $product->prod_id }}">
                                 <th scope="row" class="align-middle">{{ $product->prod_code }}</th>
-                                <td class="align-middle">{{ $product->prod_name }}</td>
-                                <td class="align-middle">{{ $product->prod_setor }}</td>
-                                <td class="align-middle">{{ $product->prod_price }}</td>
                                 <td class="align-middle">
+                                    @if ($editingProduct === $product->prod_id)
+                                        <input wire:model="editedProducts.{{ $product->prod_id }}.prod_name"
+                                            class="form-control">
+                                    @else
+                                        {{ $product->prod_name }}
+                                    @endif
+                                </td>
+                                <td class="align-middle">
+                                    @if ($editingProduct === $product->prod_id)
+                                        <select wire:model="editedProducts.{{ $product->prod_id }}.prod_setor"
+                                            class="form-select">
+                                            <option {{ $product->prod_setor == 1 ? 'selected' : '' }} value="1">1 -
+                                                Bebidas</option>
+                                            <option {{ $product->prod_setor == 2 ? 'selected' : '' }} value="2">2 -
+                                                Chocolates</option>
+                                            <option {{ $product->prod_setor == 3 ? 'selected' : '' }} value="3">3
+                                                - Salgadinhos</option>
+                                            <option {{ $product->prod_setor == 4 ? 'selected' : '' }} value="4">4
+                                                - Sorvetes</option>
+                                        </select>
+                                    @else
+                                        {{ $product->prod_setor }}
+                                    @endif
+                                </td>
+                                <td class="align-middle">
+                                    @if ($editingProduct === $product->prod_id)
+                                        <input wire:model="editedProducts.{{ $product->prod_id }}.prod_price"
+                                            class="form-control" style="max-width: 70%;" id="ProductPrice"
+                                            name="ProductPrice">
+                                    @else
+                                        {{ $product->prod_price }}
+                                    @endif
+                                </td>
+                                <td class="align-middle">
+                                    @if ($editingProduct === $product->prod_id)
+                                        {{-- AFTER EDIT CLICK --}}
+                                        <button type="button" class="btn btn-success btn-circle">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
 
-                                    <button type="button" class="btn btn-danger btn-circle" data-bs-toggle="modal"
-                                        data-bs-target="#modal-exclude" data-product-name="{{ $product->prod_name }}"
-                                        data-product-id="{{ $product->prod_id }}">
-                                        <i class="fa fa-solid fa-trash"></i>
-                                    </button>
-
-                                    <button type="button" class="btn btn-warning btn-circle">
-                                        <i class="fas fa-solid fa-pen-to-square"></i>
-                                    </button>
+                                        <button wire:click="cancelEdit()" type="button"
+                                            class="btn btn-danger btn-circle">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    @else
+                                        @if ($editingProduct === null)
+                                            <button type="button" class="btn btn-danger btn-circle"
+                                                data-bs-toggle="modal" data-bs-target="#modal-exclude"
+                                                data-product-name="{{ $product->prod_name }}"
+                                                data-product-id="{{ $product->prod_id }}">
+                                                <i class="fa fa-solid fa-trash"></i>
+                                            </button>
+                                        @endif
+                                        <button wire:click="startEditing({{ $product->prod_id }})" type="button"
+                                            class="btn btn-warning btn-circle">
+                                            <i class="fas fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -83,7 +128,11 @@
 
     {{--  EXCLUDE MODAL SCRIPTS  --}}
     <script>
-        document.addEventListener('livewire:navigated', function() {
+        document.addEventListener('livewire:navigated', () => {
+            manipuleExcludeModal();
+        });
+
+        function manipuleExcludeModal() {
             var excludeButtons = document.querySelectorAll('.btn-danger[data-bs-toggle="modal"]');
             var modalExclude = document.querySelector('#modal-exclude');
             var modalProductName = modalExclude.querySelector('.modal-body p span');
@@ -109,7 +158,7 @@
                     }
                 });
             });
-        });
+        }
     </script>
 
     {{-- EXCLUDE MODAL --}}
@@ -121,15 +170,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Tem certeza que deseja excluir o Produto "<span></span>"?</p>
+                    @if ($editingProduct === null)
+                        <p>Tem certeza que deseja excluir o Produto "<span></span>"?</p>
+                    @else
+                        <p>Não é possível excluir um produto enquanto está editando, termine de editar ou reinicie a
+                            página antes de tentar novamente !</p>
+                    @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button id="exclude" type="button" class="btn btn-danger"
-                        data-bs-dismiss="modal">Excluir</button>
+                    @if ($editingProduct === null)
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="exclude" type="button" class="btn btn-danger"
+                            data-bs-dismiss="modal">Excluir</button>
+                    @else
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
 
 </div>

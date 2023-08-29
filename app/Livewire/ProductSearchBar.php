@@ -10,6 +10,7 @@ class ProductSearchBar extends Component
 {
     use WithPagination;
 
+
     public $search = '';
 
     public function delete($id)
@@ -42,4 +43,26 @@ class ProductSearchBar extends Component
     {
         $this->resetPage();
     }
+
+    // EDIT PRODUCT
+    public $editingProduct = null;
+
+    public $editedProducts = [];
+
+
+    public function startEditing($productId)
+    {
+        $data = Product::find($productId);
+        $this->editedProducts[$productId]['prod_name'] = $data->prod_name;
+        $this->editedProducts[$productId]['prod_setor'] = $data->prod_setor;
+        $this->editedProducts[$productId]['prod_price'] = $data->prod_price;
+
+        $this->editingProduct = $productId;
+    }
+
+    public function cancelEdit()
+    {
+        $this->editingProduct = null;
+    }
+
 }
