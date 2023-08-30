@@ -104,9 +104,8 @@
                                     @else
                                         @if ($editingProduct === null)
                                             <button type="button" class="btn btn-danger btn-circle"
-                                                data-bs-toggle="modal" data-bs-target="#modal-exclude"
-                                                data-product-name="{{ $product->prod_name }}"
-                                                data-product-id="{{ $product->prod_id }}">
+                                                wire:click="openExModal({{ $product->prod_id }})"
+                                                data-bs-toggle="modal" data-bs-target="#ExcludeModal">
                                                 <i class="fa fa-solid fa-trash"></i>
                                             </button>
                                         @endif
@@ -126,52 +125,17 @@
         </div>
     </div>
 
-    {{--  EXCLUDE MODAL SCRIPTS  --}}
-    <script>
-        document.addEventListener('livewire:navigated', () => {
-            manipuleExcludeModal();
-        });
-
-        function manipuleExcludeModal() {
-            var excludeButtons = document.querySelectorAll('.btn-danger[data-bs-toggle="modal"]');
-            var modalExclude = document.querySelector('#modal-exclude');
-            var modalProductName = modalExclude.querySelector('.modal-body p span');
-            var modalExcludeButton = modalExclude.querySelector('#exclude');
-
-            excludeButtons.forEach(function(button) {
-
-                button.addEventListener('click', function() {
-                    var productName = button.getAttribute('data-product-name');
-                    var productId = button.getAttribute('data-product-id');
-
-                    modalExcludeButton.setAttribute('wire:click', 'delete(' + productId + ')');
-                    modalProductName.textContent = productName;
-
-                    var existingBackdrops = document.querySelectorAll('.modal-backdrop');
-
-                    if (existingBackdrops.length > 1) {
-                        existingBackdrops.forEach(function(backdrop, index) {
-                            if (index !== 0) {
-                                backdrop.remove();
-                            }
-                        });
-                    }
-                });
-            });
-        }
-    </script>
-
     {{-- EXCLUDE MODAL --}}
-    <div class="modal" tabindex="-1" id="modal-exclude">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+    @if ($ExModalIsOpened)
+        <div class="modal-container-e">
+            <div class="modal-content-e">
                 <div class="modal-header">
                     <h5 class="modal-title">Excluir</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" wire:click="closeExModal()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     @if ($editingProduct === null)
-                        <p>Tem certeza que deseja excluir o Produto "<span></span>"?</p>
+                        <p>Tem certeza que deseja excluir o Produto "{{ $nameProduct }}"?</p>
                     @else
                         <p>Não é possível excluir um produto enquanto está editando, termine de editar ou reinicie a
                             página antes de tentar novamente !</p>
@@ -179,16 +143,15 @@
                 </div>
                 <div class="modal-footer">
                     @if ($editingProduct === null)
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button id="exclude" type="button" class="btn btn-danger"
-                            data-bs-dismiss="modal">Excluir</button>
+                        <button type="button" class="btn btn-secondary" wire:click="closeExModal()">Cancelar</button>
+                        <button wire:click="delete({{ $idProduct }})" id="exclude" type="button"
+                            class="btn btn-danger" data-bs-dismiss="modal">Excluir</button>
                     @else
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-secondary" wire:click="closeExModal()">Ok</button>
                     @endif
                 </div>
             </div>
         </div>
-    </div>
-
-
+    @endif
+    {{-- /EXCLUDE MODAL --}}
 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\Rule;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,10 +17,11 @@ class ProductSearchBar extends Component
     public function delete($id)
     {
         $product = Product::find($id);
-
+        $name = $product->prod_name;
         if ($product) {
             $product->delete();
-            session()->flash('message', 'Produto "excluído" com sucesso.');
+            session()->flash('message', 'Produto "'.$name.'" excluído com sucesso.');
+            $this->closeExModal();
         }
     }
 
@@ -65,4 +67,21 @@ class ProductSearchBar extends Component
         $this->editingProduct = null;
     }
 
+    // EXCLUDE MODAL
+
+    public $ExModalIsOpened = false;
+    public $nameProduct;
+    public $idProduct;
+    public function openExModal($id)
+    {
+        $data = Product::find($id);
+        $this->nameProduct = $data->prod_name;
+        $this->idProduct = $data->prod_id;
+        $this->ExModalIsOpened = true;
+    }
+
+    public function closeExModal()
+    {
+        $this->ExModalIsOpened = false;
+    }
 }
