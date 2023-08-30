@@ -35,11 +35,5 @@ class Product extends Model
     protected static function boot()
     {
         parent::boot();
-
-        static::deleting(function ($product) {
-            // Add a timestamp into prod_code before Delete Product"
-            $product->prod_code = $product->prod_code .'R'. now();
-            $product->save();
-        });
     }
 }

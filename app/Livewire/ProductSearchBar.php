@@ -19,8 +19,11 @@ class ProductSearchBar extends Component
         $product = Product::find($id);
         $name = $product->prod_name;
         if ($product) {
+            // Add a timestamp into prod_code before Delete Product"
+            $product->prod_code = $product->prod_code . 'R' . now();
+            $product->save();
             $product->delete();
-            session()->flash('message', 'Produto "'.$name.'" excluído com sucesso.');
+            session()->flash('removed', 'Produto "' . $name . '" excluído com sucesso.');
             $this->closeExModal();
         }
     }
@@ -49,15 +52,20 @@ class ProductSearchBar extends Component
     // EDIT PRODUCT
     public $editingProduct = null;
 
-    public $editedProducts = [];
+    #[Rule('required|max:255', message: 'Nome precisa ter entre 1 a 255 caracteres')]
+    public $editName;
+    public $editSetor;
+
+    #[Rule('required|numeric|min:0|regex:/^\d+(\.\d{1,2})?$/', message: 'Formato Inválido')]
+    public $editPrice;
 
 
     public function startEditing($productId)
     {
         $data = Product::find($productId);
-        $this->editedProducts[$productId]['prod_name'] = $data->prod_name;
-        $this->editedProducts[$productId]['prod_setor'] = $data->prod_setor;
-        $this->editedProducts[$productId]['prod_price'] = $data->prod_price;
+        $this->editName = $data->prod_name;
+        $this->editSetor = $data->prod_setor;
+        $this->editPrice = $data->prod_price;
 
         $this->editingProduct = $productId;
     }
@@ -65,6 +73,37 @@ class ProductSearchBar extends Component
     public function cancelEdit()
     {
         $this->editingProduct = null;
+    }
+
+    public function edit($id)
+    {
+        $product = Product::find($id);
+
+        if ($product) {
+
+            $this->validate([
+                "editPrice" => 'required|numeric|min:0',
+                "editName" => 'required|max:255'
+            ]);
+
+            $newProduct = new Product();
+            $newProduct->prod_code = $product->prod_code;
+
+            $product->prod_code = $product->prod_code .'E'. now();
+            $product->save();
+
+            $newProduct->prod_name = $this->editName;
+            $newProduct->prod_setor = $this->editSetor;
+            $newProduct->prod_price = $this->editPrice;
+
+
+            $newProduct->save();
+            $product->delete();
+
+
+            $this->cancelEdit();
+            session()->flash('edited', 'Produto editado com sucesso.');
+        }
     }
 
     // EXCLUDE MODAL

@@ -11,13 +11,21 @@
             <!-- /Button -->
         </div>
         <div class="card-body">
-            @if (session('message'))
+            @if (session('removed'))
                 <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
                     <i class="fa-solid fa-check"></i>
-                    <div class="ms-3">{{ session('message') }}</div>
+                    <div class="ms-3">{{ session('removed') }}</div>
                     <button type="button" class="btn-close pb-3" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            @if (session('edited'))
+                <div class="alert alert-warning d-flex align-items-center alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-check"></i>
+                    <div class="ms-3">{{ session('edited') }}</div>
+                    <button type="button" class="btn-close pb-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             {{-- BUTTON SEARCH --}}
             <div class="ms-3">
                 <div class="search">
@@ -58,16 +66,17 @@
                                 <th scope="row" class="align-middle">{{ $product->prod_code }}</th>
                                 <td class="align-middle">
                                     @if ($editingProduct === $product->prod_id)
-                                        <input wire:model="editedProducts.{{ $product->prod_id }}.prod_name"
-                                            class="form-control">
+                                        <input wire:model.live="editName" class="form-control">
+                                        @error('editName')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     @else
                                         {{ $product->prod_name }}
                                     @endif
                                 </td>
                                 <td class="align-middle">
                                     @if ($editingProduct === $product->prod_id)
-                                        <select wire:model="editedProducts.{{ $product->prod_id }}.prod_setor"
-                                            class="form-select">
+                                        <select wire:model="editSetor" class="form-select">
                                             <option {{ $product->prod_setor == 1 ? 'selected' : '' }} value="1">1 -
                                                 Bebidas</option>
                                             <option {{ $product->prod_setor == 2 ? 'selected' : '' }} value="2">2 -
@@ -83,9 +92,10 @@
                                 </td>
                                 <td class="align-middle">
                                     @if ($editingProduct === $product->prod_id)
-                                        <input wire:model="editedProducts.{{ $product->prod_id }}.prod_price"
-                                            class="form-control" style="max-width: 70%;" id="ProductPrice"
-                                            name="ProductPrice">
+                                        <input wire:model.live="editPrice" class="form-control" style="max-width: 70%;">
+                                        @error('editPrice')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     @else
                                         {{ $product->prod_price }}
                                     @endif
@@ -93,7 +103,8 @@
                                 <td class="align-middle">
                                     @if ($editingProduct === $product->prod_id)
                                         {{-- AFTER EDIT CLICK --}}
-                                        <button type="button" class="btn btn-success btn-circle">
+                                        <button wire:click="edit({{ $product->prod_id }})" type="button"
+                                            class="btn btn-success btn-circle">
                                             <i class="fa-solid fa-check"></i>
                                         </button>
 
