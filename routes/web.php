@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\{FincashController, ProfileController, ProductController};
 use Illuminate\Support\Facades\Route;
-use App\Livewire\ClosedFincashes;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Financial Cashes
     Route::controller(FincashController::class)->group(function () {
+        Route::get('/Fechamentos', 'index')->name('fincash.index');
+        Route::get('/Fechamentos-{id}', 'show')->name('fincash.show');
         Route::get('/caixa', 'create')->name('fincash.create');
         Route::post('/caixa', 'store')->name('fincash.store');
     });
@@ -43,11 +44,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('sb-admin.dashboard');
     })->middleware('verified')->name('dashboard');
-
-    // Old financial boxes
-    Route::controller(ClosedFincashes::class)->group(function () {
-        Route::get('/Fechamentos', 'render')->name('closures.index');
-    });
 
     // Profile
     Route::middleware('auth')->controller(ProfileController::class)->group(function () {

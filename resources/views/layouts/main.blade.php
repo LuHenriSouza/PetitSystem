@@ -13,7 +13,7 @@
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -22,10 +22,10 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
     {{-- my Custom CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/my-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/my-style.css') }}">
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
 </head>
 
@@ -78,18 +78,18 @@
         </div>
     </div>
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ asset('/js/sb-admin-2.min.js') }}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('/vendor/chart.js/Chart.min.js') }}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ asset('/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('/js/demo/chart-pie-demo.js') }}"></script>
 
     <!-- Bootstrap 5.3.1 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
@@ -97,7 +97,7 @@
     </script>
 
     <!-- Validation Scripts -->
-    <script src="{{ asset('js/validation.js') }}"></script>
+    <script src="{{ asset('/js/validation.js') }}"></script>
 </body>
 
 </html>

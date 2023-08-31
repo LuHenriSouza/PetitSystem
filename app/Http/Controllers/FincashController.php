@@ -12,7 +12,7 @@ class FincashController extends Controller
      */
     public function index()
     {
-        //
+        return view('sb-admin.reports');
     }
 
     /**
@@ -51,9 +51,10 @@ class FincashController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Fincash $fincash)
+    public function show(int $id)
     {
-        //
+        $fin = Fincash::find($id);
+        return view('livewire.report-selected', compact('fin'));
     }
 
     /**

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Carbon;
 class Fincash extends Model
 {
     use HasFactory, SoftDeletes;
@@ -26,4 +26,10 @@ class Fincash extends Model
         'deleted_at',
         'fincash_finalDate'
     ];
+
+
+    public function getDateFormatted(string $colunm,string $format)
+    {
+        return Carbon::parse($this->attributes[$colunm])->format($format); // Modify the format as needed
+    }
 }

@@ -39,7 +39,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" wire:navigate href="{{ route('closures.index') }}">
+                <a class="nav-link" wire:navigate href="{{ route('fincash.index') }}">
                     <i class="fa-solid fa-paste me-1"></i>
                     <span>Fechamentos</span></a>
             </li>
