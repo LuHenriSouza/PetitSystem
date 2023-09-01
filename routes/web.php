@@ -28,7 +28,6 @@ Route::middleware(['auth'])->group(function () {
     // Financial Cashes
     Route::controller(FincashController::class)->group(function () {
         Route::get('/Fechamentos', 'index')->name('fincash.index');
-        Route::get('/Fechamentos-{id}', 'show')->name('fincash.show');
         Route::get('/caixa', 'create')->name('fincash.create');
         Route::post('/caixa', 'store')->name('fincash.store');
     });

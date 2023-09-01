@@ -27,6 +27,10 @@ class Fincash extends Model
         'fincash_finalDate'
     ];
 
+    public function cashOutflows()
+    {
+        return $this->hasMany(CashOutflow::class, 'fincash_id');
+    }
 
     public function getDateFormatted(string $colunm,string $format)
     {

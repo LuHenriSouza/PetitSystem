@@ -6,7 +6,7 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-1">
             <h1 class="h3 mb-0 text-gray-800">Fechamentos</h1>
-            <a href="{{ route('fincash.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm">
+            <a href="{{ route('fincash.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm" wire:navigate>
                 <i class="fas fa-solid fa-cash-register"></i> Caixa</a>
 
         </div>
