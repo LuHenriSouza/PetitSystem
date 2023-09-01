@@ -12,9 +12,16 @@ class ClosedFincashes extends Component
 
     public function render()
     {
-
         $finData = Fincash::orderBy('fincash_finalDate')->paginate(10);
 
-        return view('livewire.closed-fincashes',compact('finData'));
+        return view('livewire.closed-fincashes', compact('finData'));
+    }
+
+
+    protected $selectedId;
+
+    public function showReport($id)
+    {
+        $this->selectedId = $id;
     }
 }

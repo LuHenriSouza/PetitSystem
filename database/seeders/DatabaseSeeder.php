@@ -19,7 +19,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        \App\Models\Product::factory(50)->create();
 
+        // \App\Models\Product::factory(50)->create();
+
+
+        // \App\Models\OutflowType::create([
+        //     'outflow_type' => 'Transporte'
+        // ]);
     }
 }
