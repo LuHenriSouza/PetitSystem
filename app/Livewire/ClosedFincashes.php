@@ -10,18 +10,20 @@ class ClosedFincashes extends Component
 {
     use WithPagination;
 
+    public $selectedId;
+    public $rowSelected;
+
+
     public function render()
     {
-        $finData = Fincash::orderBy('fincash_finalDate')->paginate(10);
+        $finData = Fincash::orderBy('fincash_finalDate', 'asc')->paginate(10);
 
         return view('livewire.closed-fincashes', compact('finData'));
     }
 
-
-    protected $selectedId;
-
     public function showReport($id)
     {
         $this->selectedId = $id;
+        $this->rowSelected = $id;
     }
 }
