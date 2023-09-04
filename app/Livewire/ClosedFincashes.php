@@ -26,4 +26,35 @@ class ClosedFincashes extends Component
         $this->selectedId = $id;
         $this->rowSelected = $id;
     }
+
+    // CASH OUTFLOW INPUT
+
+    public $numberOfInputs = 0;
+    public $inputValues = [];
+    public $selectValues = [];
+
+    public function addInput($add)
+    {
+        if ($add) {
+            $this->numberOfInputs++;
+        }
+        if (!$add) {
+            $this->numberOfInputs--;
+        }
+    }
+
+    // CALCULATOR
+
+    public $calcModalIsOpened = false;
+
+    public function openCalcModal()
+    {
+
+        $this->calcModalIsOpened = true;
+    }
+
+    public function closeCalcModal()
+    {
+        $this->calcModalIsOpened = false;
+    }
 }
