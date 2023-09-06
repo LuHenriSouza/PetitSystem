@@ -10,20 +10,13 @@
             <!-- /Button -->
         </div>
         <div class="card-body">
-            <div class="btn-group rounded mt-2" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                <label class="rounded-start btn btn-outline-warning" for="btnradio1">Código de
-                    Barras</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-warning" for="btnradio2">Código Personalizado</label>
-            </div>
-            <form action="{{ route('product.store') }}" method="POST">
+            <form action="{{ route('product.store') }}" method="POST" id="ProdForm">
                 @csrf
                 <div class="mb-3" id="customCodeInput">
                     <label for="CustomCode" class="form-label">Código</label>
                     <input type="number" style="max-width: 15%;" class="form-control" id="CustomCode" name="CustomCode"
-                        required disabled>
+                        required>
+                    <span id="mensagemErro" style="color: red;"></span>
                 </div>
                 <div class="mb-2">
                     <label for="ProductName" class="form-label">Nome do Produto</label>
@@ -46,7 +39,9 @@
                         name="ProductPrice" value="0.00">
                 </div>
 
-                <button type="subimit" class="mt-4 btn btn-warning">Adicionar</button>
+                <button type="subimit" class="mt-4 btn btn-warning" id="SubmitProduct">Adicionar</button>
+                <br>
+                <span id="carregando"></span>
             </form>
         </div>
     </div>

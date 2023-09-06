@@ -24,17 +24,6 @@ $(document).ready(function () {
         }
     });
 
-    // Function to enable or disable the "Código" input field based on selection
-    $('input[name="btnradio"]').on('change', function () {
-        const customCodeInput = $('#CustomCode');
-        if ($(this).attr('id') === 'btnradio2') {
-            customCodeInput.prop('disabled', false);
-        } else {
-            customCodeInput.prop('disabled', true);
-            customCodeInput.val('')
-        }
-    });
-
     $('#boxvalue').on('input', function () {
         // Remove os caracteres de separação de milhares e decimal
         let value = $(this).val().replace(",", "").replace(".", "");
@@ -64,4 +53,20 @@ $(document).ready(function () {
         $(this).attr('placeholder', ' ');
     });
 
+    // BARCODE READER
+    $('#CustomCode').focus();
+    $('#CustomCode').on('blur', function () {
+        if ($(this).val().trim().length < 1) {
+            $('#mensagemErro').text('Campo obrigatório');
+            $('#mensagemErro').show();
+            $(this).focus();
+        } else {
+            $('#mensagemErro').hide();
+        }
+    });
+
+    $('#ProdForm').on('submit', function () {
+            $('#carregando').text('Carregando...');
+            $('#carregando').show();
+    });
 });

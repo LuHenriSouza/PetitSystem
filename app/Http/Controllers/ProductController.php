@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-
+use Illuminate\Database\QueryException;
 class ProductController extends Controller
 {
     /**
@@ -28,6 +28,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        try {
             // Validate the incoming request data
             $validatedData = $request->validate([
                 'CustomCode' => 'required|string',
@@ -47,6 +48,11 @@ class ProductController extends Controller
             $product->save();
 
             return redirect(route('product.create'))->with('message', 'Produto Cadastrado com Sucesso!');
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] === 1062) {
+                return back()->with('error', 'Já existe um registro com esse código.');
+            }
+        }
     }
 
     /**

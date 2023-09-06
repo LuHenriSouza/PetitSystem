@@ -16,6 +16,13 @@
                 <button type="button" class="btn-close pb-3" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        @if (session('error'))
+        <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-xmark"></i>
+            <div class="ms-3">{{ session('error') }}</div>
+            <button type="button" class="btn-close pb-3" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
         <x-sb-admin.product-form />
     </div>
