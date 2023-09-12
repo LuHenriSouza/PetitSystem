@@ -2,7 +2,8 @@
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #1e1e1e">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" wire:navigate href="{{ route('home') }}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" wire:navigate
+                href="{{ route('home') }}">
                 <img src="img/Petit-logo.png" alt="logo" class="sidebar-brand-icon" height="90px" width="155px">
             </a>
 
@@ -36,6 +37,13 @@
                 <a class="nav-link" wire:navigate href="{{ route('product.index') }}">
                     <i class="fas fa-solid fa-tags"></i>
                     <span>Produtos</span></a>
+            </li>
+
+            <!-- Nav Item - Estoque -->
+            <li class="nav-item">
+                <a class="nav-link" wire:navigate href="{{ route('stock.index') }}">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Estoque</span></a>
             </li>
 
             <li class="nav-item">

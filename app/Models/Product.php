@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -28,6 +29,11 @@ class Product extends Model
     {
         return $this->BelongsToMany(Soldtoday::class, 'product_soldtodays')
             ->withPivot(['qnt', 'unique_price', 'total_prace']);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Stock::class);
     }
 
     protected static function boot()

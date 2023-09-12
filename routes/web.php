@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{FincashController, ProfileController, ProductController};
+use App\Http\Controllers\{FincashController, ProfileController, ProductController,StockController};
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +37,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/novo', 'create')->name('product.create');
         Route::post('/novo', 'store')->name('product.store');
         Route::get('/produtos', 'index')->name('product.index');
+    });
+
+    // Stock
+    Route::controller(StockController::class)->group(function () {
+        Route::get('/estoque', 'index')->name('stock.index');
     });
 
     // Dashboard
