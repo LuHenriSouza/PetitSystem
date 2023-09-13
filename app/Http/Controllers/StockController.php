@@ -12,9 +12,7 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stock = Stock::class;
-        $products = Product::class;
-        return view('livewire.stock', compact('stock','products'));
+        return view('sb-admin.stock');
     }
 
     /**

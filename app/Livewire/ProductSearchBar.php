@@ -14,20 +14,6 @@ class ProductSearchBar extends Component
 
     public $search = '';
 
-    public function delete($id)
-    {
-        $product = Product::find($id);
-        $name = $product->prod_name;
-        if ($product) {
-            // Add a timestamp into prod_code before Delete Product"
-            $product->prod_code = $product->prod_code . 'R' . now();
-            $product->save();
-            $product->delete();
-            session()->flash('removed', 'Produto "' . $name . '" excluído com sucesso.');
-            $this->closeExModal();
-        }
-    }
-
     public function render()
     {
 
@@ -42,6 +28,20 @@ class ProductSearchBar extends Component
         return view('livewire.product-search-bar', [
             'products' => $results
         ]);
+    }
+
+    public function delete($id)
+    {
+        $product = Product::find($id);
+        $name = $product->prod_name;
+        if ($product) {
+            // Add a timestamp into prod_code before Delete Product"
+            $product->prod_code = $product->prod_code . 'R' . now();
+            $product->save();
+            $product->delete();
+            session()->flash('removed', 'Produto "' . $name . '" excluído com sucesso.');
+            $this->closeExModal();
+        }
     }
 
     public function updated()
