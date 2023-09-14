@@ -18,10 +18,10 @@ class Stock extends Model
         'prod_id'
     ];
 
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'stock_validity'
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'stock_validity' => 'datetime'
     ];
 
     public function products(): BelongsTo

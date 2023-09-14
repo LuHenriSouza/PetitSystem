@@ -38,7 +38,8 @@
                         <tbody class="table-group-divider">
                             @if ($results)
                                 @foreach ($results as $prod)
-                                    <tr wire:click="showValidities({{ $prod->prod_id }})" style="cursor:pointer;">
+                                    <tr wire:click="showValidities({{ $prod->prod_id }})" style="cursor:pointer;"
+                                        class="{{ $rowSelected == $prod->prod_id ? 'table-active' : '' }}">
                                         <td>{{ $prod->prod_name }}</td>
                                     </tr>
                                 @endforeach
@@ -82,15 +83,16 @@
                             @if ($stock)
                                 @foreach ($stock as $stk)
                                     <tr>
-                                        <td>{{ $prodName }}</td>
+                                        <td>{{ $stk->products ? $stk->products->prod_name : 'N/A' }}</td>
                                         <td>{{ $stk->stock_qnt }}</td>
-                                        <td>{{ $stk->stock_validity }}</td>
+                                        <td>{{ $stk->stock_validity->format('d / m / Y') }}</td>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
                     </table>
                 </div>
+                {{ $stock->links() }}
                 <!-- /Corpo -->
             </div>
         </div>
@@ -114,8 +116,12 @@
                             <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </div>
                     </form>
-                    @error('qnt')<span class="text-danger"> {{ $message }} </span> @enderror
-                    @error('validity')<span class="text-danger"> {{ $message }} </span> @enderror
+                    @error('qnt')
+                        <span class="text-danger"> {{ $message }} </span>
+                    @enderror
+                    @error('validity')
+                        <span class="text-danger"> {{ $message }} </span>
+                    @enderror
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" wire:click="closeAddModal()">Cancelar</button>

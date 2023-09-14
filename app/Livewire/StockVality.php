@@ -15,13 +15,15 @@ class StockVality extends Component
 
     public function render()
     {
-        $stock = Stock::orderBy('stock_validity')->get();
+        $this->selectedProd ?
+        $stock = Stock::with('products')->where('prod_id', '=', $this->selectedProd)->orderBy('stock_validity')->paginate(7, pageName: 'stock'):
+        $stock = Stock::with('products')->orderBy('stock_validity')->paginate(8, pageName: 'stock');
         $results = [];
 
         if (strlen($this->search) >= 1) {
-            $results = Product::where('prod_name', 'like', '%' . $this->search . '%')->orWhere('prod_code', 'like', $this->search . '%')->orderBy('updated_at', 'desc')->paginate(8);
+            $results = Product::where('prod_name', 'like', '%' . $this->search . '%')->orWhere('prod_code', 'like', $this->search . '%')->orderBy('updated_at', 'desc')->paginate(8, pageName: 'products');
         } else {
-            $results = Product::orderBy('updated_at', 'desc')->paginate(7);
+            $results = Product::orderBy('updated_at', 'desc')->paginate(7, pageName: 'products');
         }
 
         return view('livewire.stock-vality')->with(compact('stock', 'results'));
@@ -34,14 +36,17 @@ class StockVality extends Component
 
     // VALIDITIES
     public $selectedProd;
+    public $rowSelected;
 
     public function showValidities($id)
     {
         $this->selectedProd = $id;
+        $this->rowSelected = $id;
     }
 
     public function resetValidities(){
         $this->selectedProd = null;
+        $this->rowSelected = null;
     }
 
     // ADD MODAL VALIDITIES
