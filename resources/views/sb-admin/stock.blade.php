@@ -15,7 +15,10 @@
             <p class="mb-4">Estoque e controle de validade</p>
         </div>
 
-        @livewire('stock')
+        @livewire('stock-vality')
     </div>
     <!-- /.container-fluid -->
+@endsection
+@section('scripts')
+
 @endsection

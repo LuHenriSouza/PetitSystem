@@ -68,8 +68,8 @@
                                     @if ($editingProduct === $product->prod_id)
                                         <input wire:model.live="editName" class="form-control">
                                         @error('editName')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     @else
                                         {{ $product->prod_name }}
                                     @endif

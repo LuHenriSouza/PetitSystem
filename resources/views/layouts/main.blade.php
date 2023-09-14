@@ -98,6 +98,7 @@
 
     <!-- Validation Scripts -->
     <script src="{{ asset('/js/validation.js') }}"></script>
+    @yield('scripts')
 </body>
 
 </html>

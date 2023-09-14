@@ -52,21 +52,4 @@ $(document).ready(function () {
     $('#search').on('blur', function () {
         $(this).attr('placeholder', ' ');
     });
-
-    // BARCODE READER
-    $('#CustomCode').focus();
-    $('#CustomCode').on('blur', function () {
-        if ($(this).val().trim().length < 1) {
-            $('#mensagemErro').text('Campo obrigatório');
-            $('#mensagemErro').show();
-            $(this).focus();
-        } else {
-            $('#mensagemErro').hide();
-        }
-    });
-
-    $('#ProdForm').on('submit', function () {
-            $('#carregando').text('Carregando...');
-            $('#carregando').show();
-    });
 });
