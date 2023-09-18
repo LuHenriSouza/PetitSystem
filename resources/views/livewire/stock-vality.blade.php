@@ -94,7 +94,10 @@
                                     <tr>
                                         <td>{{ $stk->products ? $stk->products->prod_name : 'N/A' }}</td>
                                         <td>{{ $stk->stock_qnt }}</td>
-                                        <td class="{{ $this->getColorClass($stk->stock_validity) }}">{{ $stk->stock_validity->format('d / m / Y') }}</td>
+                                        <td class="{{ $this->getColorClass($stk->stock_validity) }}">
+                                            {{ $stk->stock_validity->format('d / m / Y') }}
+                                            {{ $stk->stock_validity->lte(now()) ? '(Vencido)' : '' }}
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endif
