@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('stock_validity');
             $table->timestamps();
 
-            $table->foreign('prod_id')->references('prod_id')->on('products');
+            $table->foreign('prod_id')->references('prod_id')->on('products')->onDelete('cascade');
         });
     }
 

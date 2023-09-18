@@ -20,25 +20,29 @@ class DatabaseSeeder extends Seeder
         // ]);
 
 
-        // \App\Models\Product::factory(50)->create();
+        \App\Models\Product::factory(50)->create();
 
 
-        // \App\Models\OutflowType::create([
-        //     'outflow_type' => 'Transporte'
-        // ]);
+        \App\Models\OutflowType::create([
+            'outflow_type' => 'Transporte'
+        ]);
 
-        // \App\Models\Fincash::create([
-        //     'fincash_name' => 'luiz Henrique',
-        // 'fincash_value' => 450,
-        // 'fincash_isFinished' => true,
-        // 'fincash_finalValue' => 400,
-        // 'fincash_finalDate' => now()
-        // ]);
+        \App\Models\OutflowType::create([
+            'outflow_type' => 'Ao mosso'
+        ]);
 
-        // \App\Models\CashOutflow::create([
-        //     'outflow_type_id' => 1,
-        //     'fincash_id' => 2,
-        //     'outflow_value' => 150
-        // ]);
+        \App\Models\Fincash::create([
+            'fincash_name' => 'luiz Henrique',
+        'fincash_value' => 450,
+        'fincash_isFinished' => true,
+        'fincash_finalValue' => 400,
+        'fincash_finalDate' => now()
+        ]);
+
+        \App\Models\CashOutflow::create([
+            'outflow_type_id' => 1,
+            'fincash_id' => 2,
+            'outflow_value' => 150
+        ]);
     }
 }

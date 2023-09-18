@@ -14,6 +14,12 @@ class ProductSearchBar extends Component
 
     public $search = '';
 
+
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
 
@@ -30,34 +36,16 @@ class ProductSearchBar extends Component
         ]);
     }
 
-    public function delete($id)
-    {
-        $product = Product::find($id);
-        $name = $product->prod_name;
-        if ($product) {
-            // Add a timestamp into prod_code before Delete Product"
-            $product->prod_code = $product->prod_code . 'R' . now();
-            $product->save();
-            $product->delete();
-            session()->flash('removed', 'Produto "' . $name . '" excluído com sucesso.');
-            $this->closeExModal();
-        }
-    }
-
-    public function updated()
-    {
-        $this->resetPage();
-    }
-
     // EDIT PRODUCT
     public $editingProduct = null;
 
     #[Rule('required|max:255', message: 'Nome precisa ter entre 1 a 255 caracteres')]
     public $editName;
-    public $editSetor;
 
     #[Rule('required|numeric|min:0|regex:/^\d+(\.\d{1,2})?$/', message: 'Formato Inválido')]
     public $editPrice;
+
+    public $editSetor;
 
 
     public function startEditing($productId)
@@ -86,23 +74,26 @@ class ProductSearchBar extends Component
                 "editName" => 'required|max:255'
             ]);
 
-            $newProduct = new Product();
-            $newProduct->prod_code = $product->prod_code;
-
-            $product->prod_code = $product->prod_code .'E'. now();
+            $product->prod_name = $this->editName;
+            $product->prod_setor = $this->editSetor;
+            $product->prod_price = $this->editPrice;
             $product->save();
-
-            $newProduct->prod_name = $this->editName;
-            $newProduct->prod_setor = $this->editSetor;
-            $newProduct->prod_price = $this->editPrice;
-
-
-            $newProduct->save();
-            $product->delete();
-
 
             $this->cancelEdit();
             session()->flash('edited', 'Produto editado com sucesso.');
+        }
+    }
+
+    // DELETE PRODUCT
+
+    public function delete($id)
+    {
+        $product = Product::find($id);
+        $name = $product->prod_name;
+        if ($product) {
+            $product->delete();
+            session()->flash('removed', 'Produto "' . $name . '" excluído com sucesso.');
+            $this->closeExModal();
         }
     }
 
