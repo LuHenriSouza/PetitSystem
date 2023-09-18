@@ -66,6 +66,15 @@
             </div>
             <div class="card-body">
                 <!-- Corpo -->
+                @if (session('saved'))
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show"
+                        role="alert">
+                        <i class="fa-solid fa-check"></i>
+                        <div class="ms-3">{{ session('saved') }}</div>
+                        <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                @endif
                 @if ($selectedProd)
                     <button wire:click="resetValidities" type="button" class="btn btn-dark btn-circle p-0 mb-3"><i
                             class="fa-solid fa-arrow-rotate-left"></i></button>
@@ -85,10 +94,11 @@
                                     <tr>
                                         <td>{{ $stk->products ? $stk->products->prod_name : 'N/A' }}</td>
                                         <td>{{ $stk->stock_qnt }}</td>
-                                        <td>{{ $stk->stock_validity->format('d / m / Y') }}</td>
+                                        <td class="{{ $this->getColorClass($stk->stock_validity) }}">{{ $stk->stock_validity->format('d / m / Y') }}</td>
                                     </tr>
                                 @endforeach
                             @endif
+
                         </tbody>
                     </table>
                 </div>
