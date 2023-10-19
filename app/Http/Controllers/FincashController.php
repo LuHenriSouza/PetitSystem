@@ -21,10 +21,23 @@ class FincashController extends Controller
     public function create()
     {
         $hasUnfinishedFincash = Fincash::where('fincash_isFinished', false)->exists();
-        $unfinishedFincash = Fincash::where('fincash_isFinished', false)->first();
-
-        return view('sb-admin.fincash',  compact('hasUnfinishedFincash','unfinishedFincash'));
+        if($hasUnfinishedFincash){
+            return redirect(route('sale'));
+        }
+        else{
+            return view('sb-admin.fincash');
+        }
     }
+
+    public function sale(){
+        $unfinishedFincash = Fincash::where('fincash_isFinished', false)->first();
+        return view('sb-admin.salePage', compact('unfinishedFincash'));
+    }
+
+    public function saleStore(){
+
+    }
+
 
     /**
      * Store a newly created resource in storage.

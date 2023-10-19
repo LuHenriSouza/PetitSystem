@@ -146,10 +146,8 @@
                 </div>
                 <div class="modal-body">
                     @if ($editingProduct === null)
-                        <p>Tem certeza que deseja excluir o Produto "{{ $nameProduct }}"?</p>
-                    @else
-                        <p>Não é possível excluir um produto enquanto está editando, termine de editar ou reinicie a
-                            página antes de tentar novamente !</p>
+                        <p>Excluir "{{ $nameProduct }}"?</p>
+                        <p class="mt-2">Todos os registros de estoque e validade vão ser apagados !</p>
                     @endif
                 </div>
                 <div class="modal-footer">
@@ -157,8 +155,6 @@
                         <button type="button" class="btn btn-secondary" wire:click="closeExModal()">Cancelar</button>
                         <button wire:click="delete({{ $idProduct }})" id="exclude" type="button"
                             class="btn btn-danger" data-bs-dismiss="modal">Excluir</button>
-                    @else
-                        <button type="button" class="btn btn-secondary" wire:click="closeExModal()">Ok</button>
                     @endif
                 </div>
             </div>

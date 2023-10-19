@@ -46,6 +46,13 @@
                     <span>Estoque</span></a>
             </li>
 
+            <!-- Nav Item - Grupos -->
+            <li class="nav-item">
+                <a class="nav-link" wire:navigate href="{{ route('group.index') }}">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Grupos</span></a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" wire:navigate href="{{ route('fincash.index') }}">
                     <i class="fa-solid fa-paste me-1"></i>
