@@ -19,22 +19,22 @@ class ProdGroup extends Component
         if ($this->selectedGroup) {
             $prodgroup = \App\Models\ProdGroup::where('group_id', '=', $this->selectedGroup)->get();
             $productIds = $prodgroup->pluck('prod_id');
-            $prods = Product::whereIn('prod_id', $productIds)->orderBy('prod_name')->paginate(7, pageName: 'products');
+            $prods = Product::whereIn('prod_id', $productIds)->orderBy('prod_name')->Paginate(7, pageName: 'products');
         } else {
             $prods = null;
         }
         $results = [];
 
         if (strlen($this->search) >= 1) {
-            $results = Group::where('group_name', 'like', '%' . $this->search . '%')->orderBy('updated_at', 'desc')->paginate(8, pageName: 'groups');
+            $results = Group::where('group_name', 'like', '%' . $this->search . '%')->orderBy('updated_at', 'desc')->simplePaginate(8, pageName: 'groups');
         } else {
-            $results = Group::orderBy('updated_at', 'desc')->paginate(7, pageName: 'groups');
+            $results = Group::orderBy('updated_at', 'desc')->simplePaginate(7, pageName: 'groups');
         }
 
         if (strlen($this->searchProd) >= 1) {
-            $allProds = Product::where('prod_name', 'like', '%' . $this->searchProd . '%')->orderBy('updated_at', 'desc')->paginate(8, pageName: 'prodadd');
+            $allProds = Product::where('prod_name', 'like', '%' . $this->searchProd . '%')->orderBy('updated_at', 'desc')->simplePaginate(8, pageName: 'prodadd');
         } else {
-            $allProds = Product::orderBy('updated_at', 'desc')->paginate(7, pageName: 'prodadd');
+            $allProds = Product::orderBy('updated_at', 'desc')->simplePaginate(7, pageName: 'prodadd');
         }
 
         return view('livewire.prod-group')->with(compact('results', 'prods', 'allProds'));
