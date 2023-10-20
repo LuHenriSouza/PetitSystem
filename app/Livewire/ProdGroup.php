@@ -90,6 +90,11 @@ class ProdGroup extends Component
 
     // ADD PRODGROUP MODAL
     public $addProdGroupModalIsOpened = false;
+    public $modalRowSelected;
+
+    public function selectModalProd($id){
+        $this->modalRowSelected = $id;
+    }
 
     public function openProdGroupAddModal($id)
     {
@@ -102,10 +107,15 @@ class ProdGroup extends Component
     }
 
     // ADD GROUP FORM
-    #[Rule('required|max:255', message: 'Nome obrigatório!')]
-    public $prod;
 
     public function saveProdGroup()
     {
+        if ($this->modalRowSelected && $this->selectedGroup) {
+            \App\Models\ProdGroup::create([
+                'prod_id' => $this->modalRowSelected ,
+                'group_id' => $this->selectedGroup
+            ]);
+        }
+
     }
 }

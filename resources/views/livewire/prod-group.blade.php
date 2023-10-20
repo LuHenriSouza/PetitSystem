@@ -153,17 +153,18 @@
                 <div class="modal-body">
                     <form wire:submit.prevent="saveProdGroup">
                         <div class="row">
-                            <input type="text" name="searchProd" id="searchProd" class="form-control me-3 mb-2 col-4"
-                            wire:model.live='searchProd' placeholder="Procurar" required>
+                            <input type="text" name="searchProd" id="searchProd"
+                                class="form-control me-3 mb-2 col-4" wire:model.live='searchProd'
+                                placeholder="Procurar">
                             <div class="col-4">
-                                {{$allProds->links()}}
+                                {{ $allProds->links() }}
                             </div>
                             <div class="table-responsive" style="max-height: 450px;">
                                 <table class="table table-hover">
                                     <tbody class="table-group-divider">
                                         @if ($allProds)
                                             @foreach ($allProds as $prod)
-                                                <tr>
+                                                <tr wire:click="selectModalProd({{ $prod->prod_id }})" style="cursor:pointer;" class="{{ $modalRowSelected == $prod->prod_id ? 'table-active' : '' }}">
                                                     <td>{{ $prod->prod_name }}</td>
                                                     <td>{{ $prod->prod_price }}</td>
                                                 </tr>
@@ -175,7 +176,7 @@
                             <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </div>
                     </form>
-                    @error('GroupName')
+                    @error('SelectedProd')
                         <span class="text-danger"> {{ $message }} </span>
                     @enderror
                 </div>
