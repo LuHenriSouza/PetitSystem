@@ -143,7 +143,7 @@
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-danger btn-circle float-sm-end me-4"
-                                                wire:click="openDeleteProdGroupModal({{ $group->group_id }}, {{ $prod->prod_id }})"
+                                                wire:click="openDeleteProdGroupModal({{ $selectedGroup }}, {{ $prod->prod_id }})"
                                                 data-bs-toggle="modal" data-bs-target="#ExcludeModal">
                                                 <i class="fa fa-solid fa-trash"></i>
                                             </button>
@@ -205,10 +205,19 @@
                 </div>
                 <div class="modal-body">
                     @if (session('alreadyExists'))
-                    <div class="alert alert-warning d-flex align-items-center alert-dismissible fade show"
+                        <div class="alert alert-warning d-flex align-items-center alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-solid fa-check"></i>
+                            <div class="ms-3">{{ session('alreadyExists') }}</div>
+                            <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
+                    @if (session('prodGroupAdd'))
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show"
                         role="alert">
                         <i class="fa-solid fa-check"></i>
-                        <div class="ms-3">{{ session('alreadyExists') }}</div>
+                        <div class="ms-3">{{ session('prodGroupAdd') }}</div>
                         <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
                             aria-label="Close"></button>
                     </div>

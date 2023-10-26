@@ -124,9 +124,8 @@ class ProdGroup extends Component
                     'group_id' => $this->selectedGroup
                 ]);
                 session()->flash('prodGroupAdd', 'Produto adicionado !');
-                $this->closeProdGroupAddModal();
             } else {
-                session()->flash('alreadyExists','Esse produto ja pertence a esse grupo !');
+                session()->flash('alreadyExists', 'Esse produto ja pertence a esse grupo !');
             }
         }
     }
@@ -185,12 +184,15 @@ class ProdGroup extends Component
 
     public function deleteProdGroup($id_group, $id_prod)
     {
-        \App\Models\ProdGroup::where('group_id', $id_group)
+        $data = \App\Models\ProdGroup::where('group_id', $id_group)
             ->where('prod_id', $id_prod)
-            ->delete();
+            ->get();
 
-        session()->flash('prodGroupRemoved', 'Produtos com group_id ' . $id_group . ' e prod_id ' . $id_prod . ' removidos !');
+        foreach ($data as $prod) {
+            $prod->delete();
+        }
+
+        session()->flash('prodGroupRemoved', 'Produto "' . $this->nameProd . '" removido !');
         $this->closeExModalGroup();
     }
-
 }
