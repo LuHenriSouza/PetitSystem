@@ -86,13 +86,17 @@ class ProdGroup extends Component
         Group::create([
             'group_name' => $this->groupName
         ]);
+        session()->flash('groupAdd', 'Grupo "' . $this->groupName . '" criado !');
+        $this->closeGroupAddModal();
+        $this->groupName = "";
     }
 
     // ADD PRODGROUP MODAL
     public $addProdGroupModalIsOpened = false;
     public $modalRowSelected;
 
-    public function selectModalProd($id){
+    public function selectModalProd($id)
+    {
         $this->modalRowSelected = $id;
     }
 
@@ -111,11 +115,82 @@ class ProdGroup extends Component
     public function saveProdGroup()
     {
         if ($this->modalRowSelected && $this->selectedGroup) {
-            \App\Models\ProdGroup::create([
-                'prod_id' => $this->modalRowSelected ,
-                'group_id' => $this->selectedGroup
-            ]);
-        }
 
+            $alreadyExists = \App\Models\ProdGroup::where('prod_id', $this->modalRowSelected)->where('group_id', $this->selectedGroup)->exists();
+
+            if (!$alreadyExists) {
+                \App\Models\ProdGroup::create([
+                    'prod_id' => $this->modalRowSelected,
+                    'group_id' => $this->selectedGroup
+                ]);
+                session()->flash('prodGroupAdd', 'Produto adicionado !');
+                $this->closeProdGroupAddModal();
+            } else {
+                session()->flash('alreadyExists','Esse produto ja pertence a esse grupo !');
+            }
+        }
     }
+
+    // DELETE
+    public $ExModalGroupIsOpened = false;
+    public $ExModalProdGroupIsOpened  = false;
+
+    public $nameGroup;
+    public $idGroup;
+
+    public $nameProd;
+    public $idProd;
+
+
+    public function openDeleteGroupModal($id_Group)
+    {
+        if ($id_Group) {
+            $data = Group::find($id_Group);
+            $this->nameGroup = $data->group_name;
+            $this->idGroup = $data->group_id;
+            $this->ExModalGroupIsOpened = true;
+        }
+    }
+
+    public function openDeleteProdGroupModal($id_Group, $id_Prod)
+    {
+        $dataGroup = Group::find($id_Group);
+        $dataProd = Product::find($id_Prod);
+        $this->idGroup = $dataGroup->group_id;
+        $this->nameGroup = $dataGroup->group_name;
+        $this->idProd = $dataProd->prod_id;
+        $this->nameProd = $dataProd->prod_name;
+        $this->ExModalProdGroupIsOpened = true;
+    }
+
+    public function closeExModalGroup()
+    {
+        $this->ExModalGroupIsOpened = false;
+        $this->ExModalProdGroupIsOpened = false;
+    }
+
+
+    public function deleteGroup($id)
+    {
+        $group = Group::find($id);
+        $name = $group->group_name;
+
+        if ($group) {
+            $group->delete();
+            session()->flash('groupRemoved', 'Grupo "' . $name . '" excluído !');
+            $this->closeExModalGroup();
+            $this->resetProducts();
+        }
+    }
+
+    public function deleteProdGroup($id_group, $id_prod)
+    {
+        \App\Models\ProdGroup::where('group_id', $id_group)
+            ->where('prod_id', $id_prod)
+            ->delete();
+
+        session()->flash('prodGroupRemoved', 'Produtos com group_id ' . $id_group . ' e prod_id ' . $id_prod . ' removidos !');
+        $this->closeExModalGroup();
+    }
+
 }

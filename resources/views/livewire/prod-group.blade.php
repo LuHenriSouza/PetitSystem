@@ -27,6 +27,24 @@
                 {{-- /BUTTON SEARCH --}}
             </div>
             <div class="card-body">
+                @if (session('groupRemoved'))
+                    <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show"
+                        role="alert">
+                        <i class="fa-solid fa-check"></i>
+                        <div class="ms-3">{{ session('groupRemoved') }}</div>
+                        <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                @endif
+                @if (session('groupAdd'))
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show"
+                        role="alert">
+                        <i class="fa-solid fa-check"></i>
+                        <div class="ms-3">{{ session('groupAdd') }}</div>
+                        <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                @endif
                 <!-- Corpo -->
                 <button type="button" class="btn btn-dark btn-icon-split p-0 mb-3" wire:click="openGroupAddModal">
                     <span class="icon text-white-50"><i class="fa fa-regular fa-plus"></i></span>
@@ -37,6 +55,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
+                                <th scope="col"></th>
+
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
@@ -44,7 +64,16 @@
                                 @foreach ($results as $group)
                                     <tr wire:click="showProducts({{ $group->group_id }})" style="cursor:pointer;"
                                         class="{{ $rowSelected == $group->group_id ? 'table-active' : '' }}">
-                                        <td>{{ $group->group_name }}</td>
+                                        <td class="align-middle">
+                                            {{ $group->group_name }}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-circle float-sm-end me-4"
+                                                wire:click="openDeleteGroupModal({{ $group->group_id }})"
+                                                data-bs-toggle="modal" data-bs-target="#ExcludeModal">
+                                                <i class="fa fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -69,6 +98,15 @@
                 @endif
             </div>
             <div class="card-body">
+                @if (session('prodGroupRemoved'))
+                    <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show"
+                        role="alert">
+                        <i class="fa-solid fa-check"></i>
+                        <div class="ms-3">{{ session('prodGroupRemoved') }}</div>
+                        <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                @endif
                 <!-- Corpo -->
                 @if (session('saved'))
                     <div class="alert alert-success d-flex align-items-center alert-dismissible fade show"
@@ -89,14 +127,27 @@
                             <tr>
                                 <th scope="col">Produto</th>
                                 <th scope="col">Preço</th>
+                                <th scope="col"></th>
+
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
                             @if ($prods)
                                 @foreach ($prods as $prod)
                                     <tr>
-                                        <td>{{ $prod->prod_name }}</td>
-                                        <td>{{ $prod->prod_price }}</td>
+                                        <td class="align-middle">
+                                            {{ $prod->prod_name }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ $prod->prod_price }}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-circle float-sm-end me-4"
+                                                wire:click="openDeleteProdGroupModal({{ $group->group_id }}, {{ $prod->prod_id }})"
+                                                data-bs-toggle="modal" data-bs-target="#ExcludeModal">
+                                                <i class="fa fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -124,7 +175,8 @@
                     <form wire:submit.prevent="saveGroup">
                         <div class="d-flex">
                             <input type="text" name="groupName" id="groupName" wire:model.live="groupName"
-                                class="form-control me-3" style="max-width: 60%" placeholder="Nome do Grupo" required>
+                                class="form-control me-3" style="max-width: 60%" placeholder="Nome do Grupo"
+                                required>
 
                             <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </div>
@@ -134,7 +186,8 @@
                     @enderror
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="closeGroupAddModal()">Cancelar</button>
+                    <button type="button" class="btn btn-secondary"
+                        wire:click="closeGroupAddModal()">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -151,6 +204,15 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    @if (session('alreadyExists'))
+                    <div class="alert alert-warning d-flex align-items-center alert-dismissible fade show"
+                        role="alert">
+                        <i class="fa-solid fa-check"></i>
+                        <div class="ms-3">{{ session('alreadyExists') }}</div>
+                        <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                @endif
                     <form wire:submit.prevent="saveProdGroup">
                         <div class="row">
                             <input type="text" name="searchProd" id="searchProd"
@@ -164,7 +226,9 @@
                                     <tbody class="table-group-divider">
                                         @if ($allProds)
                                             @foreach ($allProds as $prod)
-                                                <tr wire:click="selectModalProd({{ $prod->prod_id }})" style="cursor:pointer;" class="{{ $modalRowSelected == $prod->prod_id ? 'table-active' : '' }}">
+                                                <tr wire:click="selectModalProd({{ $prod->prod_id }})"
+                                                    style="cursor:pointer;"
+                                                    class="{{ $modalRowSelected == $prod->prod_id ? 'table-active' : '' }}">
                                                     <td>{{ $prod->prod_name }}</td>
                                                     <td>{{ $prod->prod_price }}</td>
                                                 </tr>
@@ -188,4 +252,49 @@
         </div>
     @endif
     {{-- /ADD PRODGROUP MODAL --}}
+
+    {{-- DELETE MODAL --}}
+    @if ($ExModalGroupIsOpened)
+        <div class="modal-container-e">
+            <div class="modal-content-e">
+                <div class="modal-header">
+                    <h5 class="modal-title">Excluir</h5>
+                    <button type="button" class="btn-close" wire:click="closeExModalGroup()"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Apagar grupo <b>"{{ $nameGroup }}"</b>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        wire:click="closeExModalGroup()">Cancelar</button>
+                    <button wire:click="deleteGroup({{ $idGroup }})" id="exclude" type="button"
+                        class="btn btn-danger" data-bs-dismiss="modal">Excluir</button>
+                </div>
+            </div>
+        </div>
+    @endif
+    {{-- /DELETE MODAL --}}
+    {{-- DELETE PRODGROUP MODAL --}}
+    @if ($ExModalProdGroupIsOpened)
+        <div class="modal-container-e">
+            <div class="modal-content-e">
+                <div class="modal-header">
+                    <h5 class="modal-title">Excluir</h5>
+                    <button type="button" class="btn-close" wire:click="closeExModalGroup()"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Remover produto <b>"{{ $nameProd }}"</b> do grupo <b>"{{ $nameGroup }}"</b> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        wire:click="closeExModalGroup()">Cancelar</button>
+                    <button wire:click="deleteProdGroup({{ $idGroup }}, {{ $idProd }})" id="exclude"
+                        type="button" class="btn btn-danger" data-bs-dismiss="modal">Excluir</button>
+                </div>
+            </div>
+        </div>
+    @endif
+    {{-- /DELETE PRODGROUP MODAL --}}
 </div>
