@@ -128,10 +128,12 @@
                                 <th scope="col">Produto</th>
                                 <th scope="col">Preço</th>
                                 <th scope="col"></th>
-
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
+                            <div wire:loading.delay wire:target="showProducts" class="my-2">
+                                <h2>Carregando...</h2>
+                            </div>
                             @if ($prods)
                                 @foreach ($prods as $prod)
                                     <tr>
@@ -164,7 +166,7 @@
     </div>
     {{-- ADD GROUP MODAL --}}
     @if ($addGroupModalIsOpened)
-        <div class="modal-container-e" id="addModal">
+        <div class="modal-container-e" id="addModal" wire:transition>
             <div class="modal-content-e">
                 <div class="modal-header">
                     <h5 class="modal-title">Cadastrar</h5>
@@ -196,7 +198,7 @@
 
     {{-- ADD PRODGROUP MODAL --}}
     @if ($addProdGroupModalIsOpened)
-        <div class="modal-container-e" id="addModal">
+        <div class="modal-container-e" id="addModal" wire:transition>
             <div class="modal-content-e">
                 <div class="modal-header">
                     <h5 class="modal-title">Cadastrar</h5>
@@ -214,14 +216,14 @@
                         </div>
                     @endif
                     @if (session('prodGroupAdd'))
-                    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-solid fa-check"></i>
-                        <div class="ms-3">{{ session('prodGroupAdd') }}</div>
-                        <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
-                            aria-label="Close"></button>
-                    </div>
-                @endif
+                        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-solid fa-check"></i>
+                            <div class="ms-3">{{ session('prodGroupAdd') }}</div>
+                            <button type="button" class="btn-close pb-3" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
                     <form wire:submit.prevent="saveProdGroup">
                         <div class="row">
                             <input type="text" name="searchProd" id="searchProd"
@@ -264,7 +266,7 @@
 
     {{-- DELETE MODAL --}}
     @if ($ExModalGroupIsOpened)
-        <div class="modal-container-e">
+        <div class="modal-container-e" wire:transition.opacity>
             <div class="modal-content-e">
                 <div class="modal-header">
                     <h5 class="modal-title">Excluir</h5>
@@ -286,7 +288,7 @@
     {{-- /DELETE MODAL --}}
     {{-- DELETE PRODGROUP MODAL --}}
     @if ($ExModalProdGroupIsOpened)
-        <div class="modal-container-e">
+        <div class="modal-container-e" wire:transition.opacity>
             <div class="modal-content-e">
                 <div class="modal-header">
                     <h5 class="modal-title">Excluir</h5>
