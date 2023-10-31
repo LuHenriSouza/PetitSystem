@@ -118,45 +118,64 @@
                     </div>
                 @endif
                 @if ($selectedGroup)
-                    <button wire:click="resetProducts" type="button" class="btn btn-dark btn-circle p-0 mb-3"><i
+                    <button wire:click="resetProducts" wire:loading.remove wire:target="showProducts" type="button" class="btn btn-dark btn-circle p-0 mb-3"><i
                             class="fa-solid fa-arrow-rotate-left"></i></button>
                 @endif
-                <div class="table-responsive" style="max-height: 450px;">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Produto</th>
-                                <th scope="col">Preço</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-group-divider">
-                            <div wire:loading.delay wire:target="showProducts" class="my-2">
-                                <h2>Carregando...</h2>
-                            </div>
-                            @if ($prods)
-                                @foreach ($prods as $prod)
-                                    <tr>
-                                        <td class="align-middle">
-                                            {{ $prod->prod_name }}
-                                        </td>
-                                        <td class="align-middle">
-                                            {{ $prod->prod_price }}
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-circle float-sm-end me-4"
-                                                wire:click="openDeleteProdGroupModal({{ $selectedGroup }}, {{ $prod->prod_id }})"
-                                                data-bs-toggle="modal" data-bs-target="#ExcludeModal">
-                                                <i class="fa fa-solid fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-
-                        </tbody>
-                    </table>
+                <div wire:loading wire:target="showProducts" class=" mb-2">
+                    <div class="lds-spinner ms-3">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
+
+                @if ($prods)
+                    <div class="table-responsive" style="max-height: 450px;" wire:loading.remove wire:target="showProducts">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Produto</th>
+                                    <th scope="col">Preço</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                @if ($prods)
+                                    @foreach ($prods as $prod)
+                                        <tr>
+                                            <td class="align-middle">
+                                                {{ $prod->prod_name }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $prod->prod_price }}
+                                            </td>
+                                            <td>
+                                                <button type="button"
+                                                    class="btn btn-danger btn-circle float-sm-end me-4"
+                                                    wire:click="openDeleteProdGroupModal({{ $selectedGroup }}, {{ $prod->prod_id }})"
+                                                    data-bs-toggle="modal" data-bs-target="#ExcludeModal">
+                                                    <i class="fa fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <h3 wire:loading.remove wire:target="showProducts">Selecione um grupo</h3>
+                @endif
                 @if ($prods)
                     {{ $prods->links() }}
                 @endif

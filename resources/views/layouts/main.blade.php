@@ -98,7 +98,7 @@
 
     <!-- Validation Scripts -->
     <script src="{{ asset('/js/validation.js') }}"></script>
+    <script src="{{ asset('/js/dropdown.js')}}"></script>
     @yield('scripts')
 </body>
-
 </html>
