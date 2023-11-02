@@ -29,24 +29,51 @@
                                     <tr>
                                         <td class="align-middle">{{ $item['product']->prod_name }}</td>
                                         <td class="align-middle">{{ $item['product']->prod_price }}</td>
-                                        <td class="align-middle" wire:loading.remove>
-                                            @if ($item['count'] == 1)
-                                                <i class="fa-solid fa-trash-can me-2" style="cursor:pointer;"
-                                                    wire:click="minusProd({{ $item['product']->prod_id }})"></i>
-                                            @else
-                                                <i class="fa-solid fa-caret-left me-2" style="cursor:pointer;"
-                                                    wire:click="minusProd({{ $item['product']->prod_id }})"></i>
-                                            @endif
-                                            <span>{{ $item['count'] }}</span>
-                                            <i class="fa-solid fa-caret-right ms-2" style="cursor:pointer;"
-                                                wire:click="addProd({{ $item['product']->prod_id }})"></i>
+                                        <td class="align-middle">
+                                            <div wire:loading.remove
+                                                wire:target="minusProd({{ $item['product']->prod_id }})">
+                                                <div wire:loading.remove
+                                                    wire:target="addProd({{ $item['product']->prod_id }})">
+                                                    @if ($item['count'] == 1)
+                                                        <i class="fa-solid fa-trash-can me-2" style="cursor:pointer;"
+                                                            wire:click="minusProd({{ $item['product']->prod_id }})"></i>
+                                                    @else
+                                                        <i class="fa-solid fa-caret-left me-2" style="cursor:pointer;"
+                                                            wire:click="minusProd({{ $item['product']->prod_id }})"></i>
+                                                    @endif
+                                                    <span>{{ $item['count'] }}</span>
+                                                    <i class="fa-solid fa-caret-right ms-2" style="cursor:pointer;"
+                                                        wire:click="addProd({{ $item['product']->prod_id }})"></i>
+                                                </div>
+                                            </div>
+                                            <span wire:loading wire:target="minusProd({{ $item['product']->prod_id }})">
+                                                Removendo...
+                                            </span>
+                                            <span wire:loading wire:target="addProd({{ $item['product']->prod_id }})">
+                                                Adicionando...
+                                            </span>
                                         </td>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
-
                     </table>
+                </div>
+                <div wire:loading wire:target="atualizarResultados" class="mx-auto mb-4">
+                    <div class="lds-spinner ms-3">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
                 @if (!empty($searchResults))
                     <div class="row">
@@ -60,13 +87,6 @@
                         <p class="col-3 pt-2"><strong>TOTAL: R$ {{ $totalValue }}</strong></p>
                     </div>
                 @endif
-                <div wire:loading wire:target="atualizarResultados" class="mx-auto mb-2">
-                    <div class="loading">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
                 <!-- /Corpo -->
 
             </div>
