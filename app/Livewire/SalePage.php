@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Product;
+use App\Models\{Product, Soldtoday, Product_Soldtoday};
 use Livewire\Component;
 
 class SalePage extends Component
@@ -11,7 +11,7 @@ class SalePage extends Component
     public $searchTerm = '';
     public $searchResults = [];
     public $totalValue;
-
+    public $lastResult;
     public function atualizarResultados()
     {
         // Realize a pesquisa no banco de dados
@@ -33,9 +33,18 @@ class SalePage extends Component
                 ];
             }
 
-            $this->attTotalValue($productId);
+            $this->lastResult = $result;
+            $this->attTotalValue();
         } else {
-            session()->flash('NotFound', 'Produto não encontrado!');
+            if (!trim($this->searchTerm)) {
+                if (isset($this->searchResults[$this->lastResult->prod_id])) {
+                    $this->addProd($this->lastResult->prod_id);
+                }else{
+                    session()->flash('NotFound', 'Produto não encontrado!');
+                }
+            } else {
+                session()->flash('NotFound', 'Produto não encontrado!');
+            }
         }
 
         // Limpe o campo de pesquisa
@@ -45,7 +54,7 @@ class SalePage extends Component
     public function addProd($productId)
     {
         $this->searchResults[$productId]['count']++;
-        $this->attTotalValue($productId);
+        $this->attTotalValue();
     }
 
     public function minusProd($productId)
@@ -56,14 +65,14 @@ class SalePage extends Component
             $this->searchResults[$productId]['count']--;
         }
 
-        $this->attTotalValue($productId);
+        $this->attTotalValue();
     }
 
     public function attTotalValue()
     {
         $total = 0;
 
-        foreach ($this->searchResults as $productId => $item) {
+        foreach ($this->searchResults as $item) {
             $product = $item['product'];
             $count = $item['count'];
 
@@ -77,5 +86,26 @@ class SalePage extends Component
     public function render()
     {
         return view('livewire.sale-page');
+    }
+
+    // FINALIZAR A VENDA
+    public function finish(){
+        if($this->searchResults){
+            $sale = Soldtoday::create();
+            foreach($this->searchResults as $item){
+                Product_Soldtoday::create([
+                    'prod_id' => $item['product']->prod_id,
+                    'sale_id' => $sale->sale_id,
+                    'qnt' => $item['count'],
+                    'unique_price' => $item['product']->prod_price,
+                    'total_price' => ($item['product']->prod_price * $item['count'])
+                ]);
+            }
+            $this->searchResults = [];
+            $this->attTotalValue();
+            session()->flash('FinishSuccess', 'Venda Efetuada :)');
+        }else{
+            session()->flash('FinishError', 'Ocorreu um Erro ao Finalizar a Compra!');
+        }
     }
 }

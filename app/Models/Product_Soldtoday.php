@@ -16,6 +16,6 @@ class Product_Soldtoday extends Model
         'sale_id',
         'qnt',
         'unique_price',
-        'total_prace'
+        'total_price'
     ];
 }

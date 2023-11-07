@@ -8,6 +8,13 @@
                     <button type="button" class="btn-close pb-3" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            @if (session('FinishSuccess'))
+                <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-check"></i>
+                    <div class="ms-3">{{ session('FinishSuccess') }}</div>
+                    <button type="button" class="btn-close pb-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="card-header py-3">
                 <input type="text" name="search" id="search" class="form-control" wire:model="searchTerm"
                     wire:keydown.enter="atualizarResultados" autocomplete="off">
@@ -78,10 +85,28 @@
                 @if (!empty($searchResults))
                     <div class="row">
                         <div class="col-4 pt-2">
-                            <button class="btn btn-dark ms-2" wire:click="Finish">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Finalizar
-                            </button>
+                            <div wire:loading.remove>
+                                <button class="btn btn-dark ms-2" wire:click="finish">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    Finalizar
+                                </button>
+                            </div>
+                            <div wire:loading wire:target="finish" class="mx-auto mb-4">
+                                <div class="lds-spinner ms-3">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-4"></div>
                         <p class="col-3 pt-2"><strong>TOTAL: R$ {{ $totalValue }}</strong></p>
