@@ -1,6 +1,3 @@
-@php
-    $finca = App\Models\Fincash::with('cashOutflows.outflowType')->find($selectedId);
-@endphp
 <div>
     <div class="row">
         <div class="col-md-5">
@@ -42,22 +39,24 @@
                 <div class="card-header py-3 d-sm-flex align-items-center justify-content-between">
                     <h5 class="m-0 font-weight-bold text-primary">Fechamento |
                         @if ($selectedId)
-                            {{ $finca->getDateFormatted('created_at', 'd / m / y H:i:s') .
+                            {{ $selectedFincashData->getDateFormatted('created_at', 'd / m / y H:i:s') .
                                 ' - ' .
-                                ($finca->fincash_isFinished ? $finca->getDateFormatted('fincash_finalDate', 'H:i:s d / m / y') : 'Aberto') }}
+                                ($selectedFincashData->fincash_isFinished
+                                    ? $selectedFincashData->getDateFormatted('fincash_finalDate', 'H:i:s d / m / y')
+                                    : 'Aberto') }}
                         @endif
                         |
                     </h5>
                     @if ($selectedId)
-                        @if (!$finca->fincash_isFinished)
+                        @if (!$selectedFincashData->fincash_isFinished)
                             <button type="button" class="btn btn-dark btn-icon-split p-0" wire:click="openCalcModal">
                                 <span class="icon text-white-50"><i class="fa-solid fa-flag-checkered"></i></span>
                                 <span class="text">Fechar Caixa</span>
                             </button>
                         @else
-                            <a href="{{ route('product.create') }}" type="button" class="btn btn-dark" wire:navigate>
+                            {{-- <a href="{{ route('product.create') }}" type="button" class="btn btn-dark" wire:navigate>
                                 <i class="fa-solid fa-pencil"></i></i>
-                            </a>
+                            </a> --}}
                         @endif
                     @endif
                 </div>
@@ -65,23 +64,35 @@
                     <!-- Corpo -->
                     @if ($selectedId)
                         <div>
-                            <h5 class="mb-4">Nome: {{ $finca->fincash_name }} </h5>
+                            <h5 class="mb-4">Nome: {{ $selectedFincashData->fincash_name }} </h5>
 
-                            <p>Inicio: {{ $finca->fincash_value }} </p>
+                            <p>Inicio: {{ $selectedFincashData->fincash_value }} </p>
                             <p>Saidas: </p>
                             <ul>
-                                @if (!$finca->fincash_isFinished)
+                                @if (!$selectedFincashData->fincash_isFinished)
                                     @for ($i = 1; $i <= $numberOfInputs; $i++)
                                         <div class="d-flex ">
-                                            <select wire:model="selectValues.{{ $i }}"
+                                            <select wire:model.live="selectValues.{{ $i }}"
                                                 class="form-select m-2" style="max-width: 200px;">
-                                                @foreach ($finca->cashOutflows as $out)
-                                                    <option value="{{ $out->outflowType->outflow_type_id }}">
-                                                        {{ $out->outflowType->outflow_type }}</option>
+                                                <option value=""> Selecione... </option>
+                                                @foreach ($outflowTypes as $out)
+                                                    <option value="{{ $out->outflow_type_id }}">
+                                                        {{ $out->outflow_type }}</option>
                                                 @endforeach
+                                                <option value="other"> Outro </option>
                                             </select>
-                                            <input type="number" wire:model="inputValues.{{ $i }}"
-                                                class="form-control m-2" style="max-width: 110px;">
+                                            @if (isset($selectValues[$i]) && $selectValues[$i] === 'other')
+                                                <input type="text" class="form-control mt-2 me-2"
+                                                    placeholder="Descrição" style="max-width: 33%">
+                                            @endif
+                                            <div class="input-group mt-2">
+                                                <span class="input-group-text" style="max-height: 38px"
+                                                    id="inputGroupPrepend">R$</span>
+                                                <input type="text" placeholder="Valor"
+                                                    wire:model="inputValues.{{ $i }}"
+                                                    class="form-control outflow-value" style="max-width: 110px"
+                                                    wire:focus="atualizarPagina">
+                                            </div>
                                         </div>
                                     @endfor
                                     <button wire:click="addInput(true)" class="btn btn-circle btn-dark mt-1 ms-5"><i
@@ -92,7 +103,7 @@
                                                 class="fa-solid fa-minus"></i></button>
                                     @endif
                                 @else
-                                    @foreach ($finca->cashOutflows as $out)
+                                    @foreach ($selectedFincashData->cashOutflows as $out)
                                         <li>
                                             {{ $out->outflowType->outflow_type }}: {{ $out->outflow_value }}
                                         </li>
@@ -100,10 +111,10 @@
                                 @endif
                             </ul>
                             <p>Observações: </p>
-                            @if (!$finca->fincash_isFinished)
+                            @if (!$selectedFincashData->fincash_isFinished)
                                 <Textarea class="form-control mb-3"></Textarea>
                             @else
-                                <p>Valor Final: {{ $finca->fincash_finalValue }}</p>
+                                <p>Valor Final: {{ $selectedFincashData->fincash_finalValue }}</p>
                             @endif
                         </div>
                     @endif
@@ -167,13 +178,41 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeCalcModal()">Cancelar</button>
-                        <button wire:click="" id="CALCULATOR" type="button"
-                            class="btn btn-danger" data-bs-dismiss="modal">Excluir</button>
-                        <button type="button" class="btn btn-secondary" wire:click="closeCalcModal()">Ok</button>
+                    <button type="button" class="btn btn-secondary" wire:click="closeCalcModal()">Cancelar</button>
+                    <button wire:click="" id="CALCULATOR" type="button" class="btn btn-danger"
+                        data-bs-dismiss="modal">Excluir</button>
+                    <button type="button" class="btn btn-secondary" wire:click="closeCalcModal()">Ok</button>
                 </div>
             </div>
         </div>
     @endif
     {{-- /CALCULATOR MODAL --}}
 </div>
+<script>
+    // Ouvir o evento Livewire 'paginaAtualizada'
+    document.addEventListener('livewire:navigated', function() {
+        Livewire.on('paginaAtualizada', function() {
+            // Obtém todos os elementos com a classe 'boxvalue'
+            const inputElements = document.querySelectorAll('.outflow-value');
+
+            // Loop através de cada elemento e adicione um ouvinte de eventos para o evento 'input'
+            inputElements.forEach((element) => {
+                element.addEventListener('input', function() {
+                    let value = this.value.replace(",", "").replace(".", "");
+
+                    if (!isNaN(value)) {
+                        let formattedValue = (parseFloat(value) / 100).toFixed(2);
+                        this.value = formattedValue;
+                    } else {
+                        let value2 = value.replace(/[^0-9]/g, '');
+                        let formattedValue = (value2 / 100).toFixed(2);
+                        this.value = formattedValue;
+                    }
+
+                    this.setSelectionRange(formattedValue.length, formattedValue
+                        .length);
+                });
+            });
+        });
+    });
+</script>
