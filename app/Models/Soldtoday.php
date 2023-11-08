@@ -11,6 +11,10 @@ class Soldtoday extends Model
 
     protected $primaryKey = 'sale_id';
 
+    protected $fillable = [
+        'fincash_id'
+    ];
+
     public function products()
     {
         return $this->BelongsToMany(Product::class,'product_soldtodays')

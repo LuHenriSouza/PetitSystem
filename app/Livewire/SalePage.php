@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\{Product, Soldtoday, Product_Soldtoday};
+use App\Models\{Product, Soldtoday, Product_Soldtoday, Fincash};
 use Livewire\Component;
 
 class SalePage extends Component
@@ -39,7 +39,7 @@ class SalePage extends Component
             if (!trim($this->searchTerm)) {
                 if (isset($this->searchResults[$this->lastResult->prod_id])) {
                     $this->addProd($this->lastResult->prod_id);
-                }else{
+                } else {
                     session()->flash('NotFound', 'Produto não encontrado!');
                 }
             } else {
@@ -89,22 +89,28 @@ class SalePage extends Component
     }
 
     // FINALIZAR A VENDA
-    public function finish(){
-        if($this->searchResults){
-            $sale = Soldtoday::create();
-            foreach($this->searchResults as $item){
-                Product_Soldtoday::create([
-                    'prod_id' => $item['product']->prod_id,
-                    'sale_id' => $sale->sale_id,
-                    'qnt' => $item['count'],
-                    'unique_price' => $item['product']->prod_price,
-                    'total_price' => ($item['product']->prod_price * $item['count'])
-                ]);
+    public function finish()
+    {
+        if ($this->searchResults) {
+            $Fincash = Fincash::where('fincash_isFinished', false)->first();
+            if ($Fincash) {
+                $sale = Soldtoday::create(['fincash_id' => $Fincash->fincash_id]);
+                foreach ($this->searchResults as $item) {
+                    Product_Soldtoday::create([
+                        'prod_id' => $item['product']->prod_id,
+                        'sale_id' => $sale->sale_id,
+                        'qnt' => $item['count'],
+                        'unique_price' => $item['product']->prod_price,
+                        'total_price' => ($item['product']->prod_price * $item['count'])
+                    ]);
+                }
+                $this->searchResults = [];
+                $this->attTotalValue();
+                session()->flash('FinishSuccess', 'Venda Efetuada :)');
+            }else{
+                redirect(route('fincash.create'));
             }
-            $this->searchResults = [];
-            $this->attTotalValue();
-            session()->flash('FinishSuccess', 'Venda Efetuada :)');
-        }else{
+        } else {
             session()->flash('FinishError', 'Ocorreu um Erro ao Finalizar a Compra!');
         }
     }

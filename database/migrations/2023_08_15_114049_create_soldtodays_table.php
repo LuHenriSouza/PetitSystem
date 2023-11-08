@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('soldtodays', function (Blueprint $table) {
             $table->increments('sale_id');
+            $table->unsignedInteger('fincash_id');
             $table->timestamps();
         });
     }
